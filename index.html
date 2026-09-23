@@ -1,0 +1,1907 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Radar Tributário Ceará</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,600;0,700;1,400&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --paper:#f6f4ef; --surface:#fffefb; --surface-2:#efece4;
+  --ink:#1b1a17; --ink-2:#4a473f; --ink-3:#7a7568;
+  --rule:#ddd8cc; --rule-2:#c9c2b2;
+  --accent:#8c2f21; --accent-soft:#f0e3df;
+  --alto:#a3341f; --alto-bg:#f6e4df;
+  --medio:#8a6212; --medio-bg:#f6eeda;
+  --baixo:#4c6070; --baixo-bg:#e6ecf0;
+  --ok:#2f6146; --ok-bg:#e2eee7;
+  --warn-bg:#f7f0dc; --warn-line:#c9a227;
+  --shadow:0 1px 2px rgba(27,26,23,.05);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#16171a; --surface:#1d1f23; --surface-2:#25282d;
+    --ink:#eceae4; --ink-2:#b5b1a7; --ink-3:#858074;
+    --rule:#32363c; --rule-2:#454a52;
+    --accent:#e08270; --accent-soft:#3a2723;
+    --alto:#e8907a; --alto-bg:#3d2620;
+    --medio:#d9b25f; --medio-bg:#362d19;
+    --baixo:#8fb0c4; --baixo-bg:#1f2a32;
+    --ok:#7fbd9b; --ok-bg:#1c2b23;
+    --warn-bg:#332c18; --warn-line:#c9a227;
+    --shadow:0 1px 2px rgba(0,0,0,.3);
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#16171a; --surface:#1d1f23; --surface-2:#25282d;
+  --ink:#eceae4; --ink-2:#b5b1a7; --ink-3:#858074;
+  --rule:#32363c; --rule-2:#454a52;
+  --accent:#e08270; --accent-soft:#3a2723;
+  --alto:#e8907a; --alto-bg:#3d2620;
+  --medio:#d9b25f; --medio-bg:#362d19;
+  --baixo:#8fb0c4; --baixo-bg:#1f2a32;
+  --ok:#7fbd9b; --ok-bg:#1c2b23;
+  --warn-bg:#332c18; --warn-line:#c9a227;
+  --shadow:0 1px 2px rgba(0,0,0,.3);
+}
+*{box-sizing:border-box}
+body{
+  margin:0; background:var(--paper); color:var(--ink);
+  font-family:"IBM Plex Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  font-size:15px; line-height:1.5; -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:1120px; margin:0 auto; padding-inline:16px; padding-block:0 56px}
+a{color:var(--accent)}
+h1,h2,h3{font-family:Spectral,Georgia,serif; text-wrap:balance; margin:0}
+.mono{font-family:"IBM Plex Mono",ui-monospace,monospace; font-variant-numeric:tabular-nums}
+
+/* ---------- header ---------- */
+header{border-bottom:1px solid var(--rule); background:var(--surface)}
+.head-in{max-width:1120px; margin:0 auto; padding:24px 16px 0}
+.brandrow{display:flex; flex-wrap:wrap; gap:20px 32px; align-items:flex-end; justify-content:space-between}
+h1{font-size:30px; font-weight:700; letter-spacing:-.015em; line-height:1.1}
+.sub{color:var(--ink-2); font-size:13.5px; margin-top:6px; max-width:52ch}
+.stats{display:flex; gap:28px; flex-wrap:wrap}
+.stat b{display:block; font-family:"IBM Plex Mono",monospace; font-size:22px; font-weight:500; line-height:1.1}
+.stat span{display:block; font-size:10.5px; letter-spacing:.09em; text-transform:uppercase; color:var(--ink-3); margin-top:3px}
+nav{display:flex; gap:4px; margin-top:22px; overflow-x:auto; scrollbar-width:none}
+nav::-webkit-scrollbar{display:none}
+nav button{
+  appearance:none; border:0; background:none; cursor:pointer; white-space:nowrap;
+  font:inherit; font-size:14px; color:var(--ink-2); padding:9px 13px 11px;
+  border-bottom:2px solid transparent; margin-bottom:-1px;
+}
+nav button:hover{color:var(--ink)}
+nav button[aria-selected="true"]{color:var(--accent); border-bottom-color:var(--accent); font-weight:600}
+nav button:focus-visible{outline:2px solid var(--accent); outline-offset:-2px; border-radius:3px}
+
+/* ---------- filtros ---------- */
+.filters{
+  display:grid; grid-template-columns:minmax(200px,1.6fr) repeat(4,minmax(120px,1fr)) minmax(190px,1.1fr);
+  gap:8px; margin:22px 0 4px;
+}
+@media (max-width:860px){ .filters{grid-template-columns:1fr 1fr} .filters .f-busca,.filters .f-datas{grid-column:1/-1} }
+input,select{
+  font:inherit; font-size:13.5px; color:var(--ink); background:var(--surface);
+  border:1px solid var(--rule-2); border-radius:5px; padding:8px 9px; width:100%; min-width:0;
+}
+input:focus,select:focus{outline:2px solid var(--accent); outline-offset:-1px; border-color:var(--accent)}
+.f-datas{display:flex; gap:6px; align-items:center}
+.f-datas span{color:var(--ink-3); font-size:12px}
+.filterbar{display:flex; justify-content:space-between; align-items:baseline; gap:12px; flex-wrap:wrap; margin-bottom:18px}
+.count{font-size:12.5px; color:var(--ink-3)}
+.count b{color:var(--ink); font-weight:600}
+.clear{appearance:none;border:0;background:none;font:inherit;font-size:12.5px;color:var(--accent);cursor:pointer;padding:0;text-decoration:underline}
+
+/* ---------- lista de itens ---------- */
+.daygroup{margin-top:26px}
+.dayhead{
+  font-size:11px; letter-spacing:.11em; text-transform:uppercase; color:var(--ink-3);
+  padding-bottom:7px; border-bottom:1px solid var(--rule-2); display:flex; justify-content:space-between; align-items:baseline;
+}
+.dayhead em{font-style:normal; font-family:"IBM Plex Mono",monospace; letter-spacing:0}
+.item{
+  display:grid; grid-template-columns:3px 1fr; gap:0 16px;
+  border-bottom:1px solid var(--rule); padding:0;
+}
+.stripe{background:var(--baixo)}
+.item[data-imp="Alto"] .stripe{background:var(--alto)}
+.item[data-imp="Médio"] .stripe{background:var(--medio)}
+.item-body{padding:15px 0 17px; min-width:0}
+.chips{display:flex; flex-wrap:wrap; gap:6px; align-items:center; margin-bottom:7px}
+.chip{
+  font-size:10.5px; letter-spacing:.055em; text-transform:uppercase; font-weight:600;
+  padding:2.5px 7px; border-radius:3px; background:var(--surface-2); color:var(--ink-2); white-space:nowrap;
+}
+.chip.imp-Alto{background:var(--alto-bg); color:var(--alto)}
+.chip.imp-Médio{background:var(--medio-bg); color:var(--medio)}
+.chip.imp-Baixo{background:var(--baixo-bg); color:var(--baixo)}
+.chip.of{background:var(--ok-bg); color:var(--ok)}
+.chip.sec{background:var(--warn-bg); color:var(--medio); border:1px solid var(--warn-line)}
+.chip.date{background:none; color:var(--ink-3); font-family:"IBM Plex Mono",monospace; letter-spacing:0; padding-left:0; text-transform:none; font-weight:400}
+.item h3{font-size:17px; font-weight:600; line-height:1.3; margin-bottom:5px}
+.item p{margin:0; color:var(--ink-2); font-size:14px; max-width:78ch}
+.prazo{
+  display:inline-block; margin-top:9px; font-size:12.5px; font-weight:600; color:var(--alto);
+  background:var(--alto-bg); padding:3px 9px; border-radius:3px;
+}
+.src{margin-top:10px; font-size:12.5px; color:var(--ink-3); display:flex; flex-wrap:wrap; gap:4px 8px; align-items:baseline}
+.src a{text-decoration:none; border-bottom:1px solid currentColor}
+.empty{padding:56px 0; text-align:center; color:var(--ink-3)}
+
+/* ---------- avisos ---------- */
+.note{
+  border-left:3px solid var(--warn-line); background:var(--warn-bg);
+  padding:13px 16px; border-radius:0 5px 5px 0; font-size:13.5px; color:var(--ink-2); margin:22px 0;
+}
+.note b{color:var(--ink)}
+
+/* ---------- reforma ---------- */
+.section-lead{font-size:15px; color:var(--ink-2); max-width:65ch; margin:20px 0 26px}
+h2{font-size:21px; font-weight:600; letter-spacing:-.01em; margin:34px 0 4px}
+.h2sub{font-size:13px; color:var(--ink-3); margin-bottom:16px}
+.tl{list-style:none; padding:0; margin:0; border-left:2px solid var(--rule-2)}
+.tl li{position:relative; padding:0 0 22px 22px}
+.tl li::before{
+  content:""; position:absolute; left:-6px; top:6px; width:10px; height:10px; border-radius:50%;
+  background:var(--surface); border:2px solid var(--rule-2);
+}
+.tl li.done::before{background:var(--accent); border-color:var(--accent)}
+.tl li.next::before{background:var(--surface); border-color:var(--alto); box-shadow:0 0 0 3px var(--alto-bg)}
+.tl .when{font-family:"IBM Plex Mono",monospace; font-size:12px; color:var(--ink-3); letter-spacing:.02em}
+.tl .what{font-weight:600; font-size:15px; margin:2px 0 3px}
+.tl .why{font-size:13.5px; color:var(--ink-2); max-width:68ch}
+
+/* ---------- tabelas ---------- */
+.tablewrap{overflow-x:auto; border:1px solid var(--rule); border-radius:6px; background:var(--surface); box-shadow:var(--shadow)}
+table{border-collapse:collapse; width:100%; min-width:840px; font-size:13px}
+th,td{text-align:left; padding:10px 13px; border-bottom:1px solid var(--rule); vertical-align:top}
+th{
+  font-size:10.5px; letter-spacing:.08em; text-transform:uppercase; color:var(--ink-3);
+  font-weight:600; background:var(--surface-2); position:sticky; top:0; white-space:nowrap;
+}
+tbody tr:last-child td{border-bottom:0}
+td.num{font-family:"IBM Plex Mono",monospace; font-variant-numeric:tabular-nums; white-space:nowrap}
+.muni{font-weight:600}
+.tag{font-size:10.5px; font-weight:600; letter-spacing:.05em; text-transform:uppercase; padding:2px 6px; border-radius:3px; white-space:nowrap}
+.tag.conf{background:var(--ok-bg); color:var(--ok)}
+.tag.sec2{background:var(--warn-bg); color:var(--medio)}
+.tag.nao{background:var(--surface-2); color:var(--ink-3)}
+.foot{font-size:12.5px; color:var(--ink-3); margin-top:14px; max-width:78ch}
+.foot ol{padding-left:18px; margin:6px 0 0}
+.foot li{margin-bottom:4px}
+
+/* ---------- fontes ---------- */
+.srcgrid{display:grid; grid-template-columns:repeat(auto-fill,minmax(270px,1fr)); gap:10px; margin-top:16px}
+.srccard{border:1px solid var(--rule); border-radius:6px; padding:12px 14px; background:var(--surface)}
+.srccard .n{font-weight:600; font-size:14px; margin-bottom:3px}
+.srccard .d{font-size:12.5px; color:var(--ink-3)}
+.srccard.blocked{border-left:3px solid var(--warn-line)}
+.srccard.live{border-left:3px solid var(--ok)}
+footer{margin-top:44px; padding-top:18px; border-top:1px solid var(--rule); font-size:12.5px; color:var(--ink-3)}
+/* ---------- boletim ---------- */
+.bol-head{padding:26px 0 0; border-bottom:1px solid var(--rule-2); margin-bottom:4px}
+.bol-kicker{font-size:11px; letter-spacing:.13em; text-transform:uppercase; color:var(--accent); font-weight:600; margin:0 0 6px}
+.bol-date{font-family:Spectral,Georgia,serif; font-size:27px; font-weight:700; letter-spacing:-.015em; line-height:1.15; margin:0}
+.bol-janela{font-size:13.5px; color:var(--ink-2); margin:8px 0 18px; max-width:68ch}
+.bol-sec{font-family:Spectral,Georgia,serif; font-size:19px; font-weight:600; margin:38px 0 2px; display:flex; align-items:baseline; gap:10px; flex-wrap:wrap}
+.bol-sec span{font-family:"IBM Plex Sans",sans-serif; font-size:11px; letter-spacing:.09em; text-transform:uppercase; color:var(--ink-3); font-weight:500}
+.bol-sub{font-size:13px; color:var(--ink-3); margin:4px 0 14px}
+
+.lede{list-style:none; padding:0; margin:14px 0 0; display:grid; gap:1px; background:var(--rule); border:1px solid var(--rule); border-radius:7px; overflow:hidden}
+.lede li{background:var(--surface); padding:13px 16px; font-size:14.5px; color:var(--ink); display:grid; grid-template-columns:auto 1fr; gap:12px; align-items:start}
+.lede b{color:var(--accent); font-weight:600}
+.lede .mk{font-family:"IBM Plex Mono",monospace; font-size:11px; color:var(--ink-3); padding-top:3px; font-variant-numeric:tabular-nums}
+
+.prazos{list-style:none; padding:0; margin:14px 0 0; display:grid; gap:7px}
+.prz{display:grid; grid-template-columns:74px 1fr; gap:0 14px; align-items:start;
+  border:1px solid var(--rule); border-left:3px solid var(--baixo); border-radius:6px; background:var(--surface); padding:11px 14px 12px}
+.prz[data-u="hoje"]{border-left-color:var(--alto); background:var(--alto-bg)}
+.prz[data-u="perto"]{border-left-color:var(--alto)}
+.prz[data-u="medio"]{border-left-color:var(--medio)}
+.prz[data-u="passou"]{opacity:.5}
+.prz .quando{font-family:"IBM Plex Mono",monospace; font-variant-numeric:tabular-nums; font-size:12px; color:var(--ink-3); line-height:1.35}
+.prz .quando b{display:block; font-size:15px; font-weight:500; color:var(--ink)}
+.prz[data-u="hoje"] .quando b,.prz[data-u="perto"] .quando b{color:var(--alto)}
+.prz .oque{font-size:14.5px; line-height:1.4; min-width:0}
+.prz .det{display:block; font-size:12.5px; color:var(--ink-3); margin-top:3px}
+@media (max-width:520px){ .prz{grid-template-columns:1fr; gap:6px} }
+
+.conferir{list-style:none; padding:0; margin:14px 0 0; display:grid; gap:9px}
+.conferir li{font-size:13.5px; color:var(--ink-2); padding-left:17px; position:relative; max-width:76ch}
+.conferir li::before{content:"?"; position:absolute; left:0; top:0; color:var(--medio); font-weight:600; font-family:"IBM Plex Mono",monospace}
+.conferir b{color:var(--ink); font-weight:600}
+
+.chip.novo{background:var(--accent); color:#fff}
+.chip.rcp{background:transparent; color:var(--ink-3); border:1px solid var(--rule-2)}
+.lkchip{font-size:11px; padding:1.5px 7px; border-radius:3px; white-space:nowrap; font-weight:500; letter-spacing:.02em}
+.lk-ato{background:var(--ok-bg); color:var(--ok)}
+.lk-noticia{background:var(--baixo-bg); color:var(--baixo)}
+.lk-indice{background:var(--warn-bg); color:var(--medio)}
+@media (prefers-reduced-motion:reduce){*{animation:none!important; transition:none!important}}
+</style>
+
+<header>
+  <div class="head-in">
+    <div class="brandrow">
+      <div>
+        <h1>Radar Tributário Ceará</h1>
+        <p class="sub">Monitoramento diário de atos tributários federais, estaduais e municipais. Cada item traz o ato, a data e a marca da fonte — oficial ou a conferir no diário.</p>
+      </div>
+      <div class="stats">
+        <div class="stat"><b id="s-itens">0</b><span>Itens no radar</span></div>
+        <div class="stat"><b id="s-alto">0</b><span>Impacto alto</span></div>
+        <div class="stat"><b id="s-muni">0</b><span>Municípios na base</span></div>
+        <div class="stat"><b class="mono">23/09</b><span>Última checagem</span></div>
+      </div>
+    </div>
+    <nav role="tablist">
+      <button role="tab" aria-selected="true" data-tab="boletim" id="tab-boletim">Boletim do dia</button>
+      <button role="tab" aria-selected="false" data-tab="radar" id="tab-radar">Radar</button>
+      <button role="tab" aria-selected="false" data-tab="reforma" id="tab-reforma">Reforma Tributária</button>
+      <button role="tab" aria-selected="false" data-tab="ctm" id="tab-ctm">Códigos Municipais</button>
+      <button role="tab" aria-selected="false" data-tab="fontes" id="tab-fontes">Fontes</button>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+
+<section id="p-boletim" role="tabpanel" aria-labelledby="tab-boletim">
+  <div class="bol-head">
+    <p class="bol-kicker" id="bol-kicker">Boletim tributário</p>
+    <h2 class="bol-date" id="bol-date"></h2>
+    <p class="bol-janela" id="bol-janela"></p>
+  </div>
+
+  <h3 class="bol-sec">Em 30 segundos</h3>
+  <ol class="lede" id="bol-lede"></ol>
+
+  <h3 class="bol-sec">Prazos <span>o que vence, em ordem</span></h3>
+  <p class="bol-sub">A contagem é recalculada toda vez que a página abre.</p>
+  <ul class="prazos" id="bol-prazos"></ul>
+
+  <h3 class="bol-sec">O que saiu <span>na janela do boletim</span></h3>
+  <p class="bol-sub">Cada fonte diz o que abre: o próprio ato, uma matéria sobre ele, ou um índice onde procurar.</p>
+  <div id="bol-itens"></div>
+
+  <h3 class="bol-sec">A conferir</h3>
+  <p class="bol-sub">O que não foi confirmado, e por quê. Fica aqui até fechar.</p>
+  <ul class="conferir" id="bol-conferir"></ul>
+</section>
+
+<section id="p-radar" role="tabpanel" aria-labelledby="tab-radar" hidden>
+  <div class="filters">
+    <div class="f-busca"><input id="q" type="search" placeholder="Buscar assunto, tributo, ato…" aria-label="Buscar"></div>
+    <select id="f-esfera" aria-label="Esfera"><option value="">Todas as esferas</option></select>
+    <select id="f-fonte" aria-label="Tipo de fonte"><option value="">Todo tipo de fonte</option></select>
+    <select id="f-tema" aria-label="Tema"><option value="">Todos os temas</option></select>
+    <select id="f-imp" aria-label="Impacto"><option value="">Todo impacto</option></select>
+    <div class="f-datas">
+      <input id="d1" type="date" aria-label="Data inicial"><span>a</span><input id="d2" type="date" aria-label="Data final">
+    </div>
+  </div>
+  <div class="filterbar">
+    <p class="count"><b id="c-n">0</b> <span id="c-lbl">itens</span> · período 24/08 a 23/09/2026</p>
+    <button class="clear" id="clear">Limpar filtros</button>
+  </div>
+  <div id="lista"></div>
+</section>
+
+<section id="p-reforma" role="tabpanel" aria-labelledby="tab-reforma" hidden>
+  <p class="section-lead">A transição corre em dois trilhos: o calendário legal, que já está fixado, e a produção normativa do dia a dia — resoluções do Comitê Gestor, notas técnicas e leiautes, que é o que realmente muda o trabalho no escritório.</p>
+  <h2>Linha do tempo</h2>
+  <p class="h2sub">Marcos com norma publicada. O ponto vazado com anel é o próximo prazo que vence.</p>
+  <ul class="tl" id="tl"></ul>
+  <h2>Itens da Reforma no radar</h2>
+  <p class="h2sub">Filtrados do período monitorado.</p>
+  <div id="lista-reforma"></div>
+</section>
+
+<section id="p-ctm" role="tabpanel" aria-labelledby="tab-ctm" hidden>
+  <p class="section-lead">Base dos Códigos Tributários Municipais, começando pelos maiores municípios do Ceará. A coluna da LC 236/2026 indica quem já se moveu para adequar processo administrativo fiscal e multas — o prazo vai até 04/09/2028.</p>
+  <p class="count" id="ctm-resumo" style="margin:0 0 16px"></p>
+  <div class="note"><b>Por que esta aba existe.</b> Dos concorrentes pesquisados, os que publicam preço cobrem "federal, estadual e capitais". No Ceará isso significa Fortaleza e mais nada — os outros 183 municípios ficam descobertos. A coluna <b>Fonte</b> é o produto: ela diz o que foi conferido em site oficial e o que ainda não.</div>
+  <div class="tablewrap">
+    <table>
+      <thead><tr>
+        <th>#</th><th>Município</th><th>Cód. IBGE</th><th>População</th><th>Lei do CTM</th><th>ISS</th><th>Situação</th><th>Fonte</th>
+      </tr></thead>
+      <tbody id="ctm-body"></tbody>
+    </table>
+  </div>
+  <div class="foot">
+    <p><b>Divergências e lacunas</b> — registradas em vez de escondidas. É isso que separa esta base de uma lista gerada por IA.</p>
+    <ol>
+      <li><b>População:</b> os números misturam safras de estimativa do IBGE. Duas leituras independentes divergiram nas posições 11 a 22 — uma coloca Tianguá em 11º, outra Quixeramobim. A diferença é de centenas de habitantes e não muda obrigação nenhuma, mas a ordem exata não está fechada.</li>
+      <li><b>Código IBGE:</b> não levantado para as posições 11 a 22. As páginas do IBGE carregam o dado por JavaScript e não o entregam à leitura automatizada. Preferi deixar em branco a escrever sete dígitos de memória.</li>
+      <li><b>Maranguape e Trairi:</b> CTM não localizado. Maranguape tem 108 mil habitantes e é obrigado ao duplo grau; em Trairi, o PDF do MPCE está digitalizado sem camada de texto. Nos dois casos o caminho é a secretaria de finanças ou o acervo da câmara.</li>
+      <li><b>Crato:</b> o portal da prefeitura marca 08/05/2017; o PDF do MPCE traz 27/09/2017.</li>
+      <li><b>Fortaleza:</b> LC nº 452/2025 — o índice do SAPL indica 28/11/2025; a ficha da própria norma, 27/12/2025.</li>
+      <li><b>Maracanaú:</b> número e ementa da Lei nº 3.805/2025 confirmados na URL oficial, data exata não localizada.</li>
+      <li><b>Crateús:</b> o PDF do MPCE está digitalizado com falha e o ano da lei não foi lido diretamente do documento.</li>
+      <li><b>Acaraú e São Gonçalo do Amarante:</b> número da lei identificado, data ainda não confirmada.</li>
+      <li><b>Russas:</b> a prefeitura anuncia nova lei de ISS em vigor e existe a Lei 1961/2021 — não verificado se altera ou substitui o CTM de 2003.</li>
+      <li><b>ITBI não é ISS:</b> em Barbalha, Crateús, Tianguá e Morada Nova a leitura automática devolveu "0,5% e 2%" como se fossem alíquotas de ISS. São de ITBI. Por isso a coluna ISS desses municípios está vazia.</li>
+      <li><b>Posições 35 a 42 (adicionadas em 19/09):</b> a safra da estimativa do IBGE não é uniforme — Brejo Santo e Itarema vêm de 2025, os demais de 2026. As posições 41 e 42 são frágeis: Itarema (45.852) e Acopiara (45.673) foram medidos em safras diferentes, e Amontada (44.814) vem logo atrás. Padronizar a safra pode reordenar o trio.</li>
+      <li><b>ISS, lacuna sistemática nas novas entradas:</b> nenhuma alíquota geral de ISS foi confirmada nos oito municípios novos. Quase todos os CTMs remetem a Anexos ou Tabelas que não acompanham o PDF publicado. A única alíquota confirmada é a de Brejo Santo, 2% para serviços de saúde prestados ao SUS — item específico, não a regra geral.</li>
+      <li><b>Granja:</b> a LC nº 22/2022 consta da listagem oficial exportada da Câmara, mas não localizei URL direta do inteiro teor; o PDF do MPCE corresponde à lei anterior (1.005/2013) e é digitalização sem camada de texto.</li>
+      <li><b>Brejo Santo, Lei 810/2014:</b> o corpo do documento diz 27/06/2014 e o nome do arquivo diz 27.07.2014; o texto se autodenomina "Lei Municipal" e o arquivo, "Lei Complementar". Divergência não dirimida.</li>
+      <li><b>Boa Viagem é o caso a observar:</b> refez o CTM inteiro em 30/12/2025, semanas antes da LC 236/2026. O art. 4º, IV já cita o IBS, mas o código nasce anterior ao novo teto de multas e ao processo administrativo fiscal nacional — vai precisar de ajuste dentro do prazo de 04/09/2028.</li>
+      <li><b>Posições 43 a 50 (adicionadas em 20/09):</b> a população vem toda da mesma série do IBGE — estimativa com data de referência 1º/07/2024 —, a mesma de Acopiara (45.673) e Mauriti (47.592), que batem exatamente com as linhas já existentes. O portal do IBGE rotula essa série ora como 2025, ora como 2026, conforme o município; o rótulo é inconsistente, a série não. O corte em 40.081 é seguro: os quatro primeiros excluídos são Massapê (39.840), Missão Velha (39.215), Ipueiras (38.287) e Mombaça (38.264).</li>
+      <li><b>Amontada, conflito de normas:</b> há dois diplomas concorrentes, ambos em fonte oficial — a Lei nº 088/1989, de 26/12/1989, que institui o CTM, no portal da Câmara, e um diploma de 25/07/2018 que dispõe sobre o CTM, no portal da Prefeitura. O de 2018 é presumivelmente o vigente, mas a Prefeitura exibe só o identificador interno "0022014/2018", que não é número de lei, e o PDF do inteiro teor está bloqueado por robots.txt. Preferi deixar sem número a inventar um.</li>
+      <li><b>Ipu, armadilha no repositório do MPCE:</b> o arquivo CodigoTributario-Ipu.pdf não é o Código Tributário — é a Lei nº 081/2001, que apenas altera um dispositivo dele. A ementa diz isso com todas as letras. O CTM é a Lei nº 009/90, identificada por via indireta; nem a Prefeitura nem a Câmara publicam o inteiro teor.</li>
+      <li><b>Paracuru, lacuna real:</b> é o único dos oito sem identificação. O MPCE tem o inteiro teor, mas é digitalização SISDIR de 21/10/2011 sem camada de texto. O Relatório Analítico do próprio MPCE confirma que "está disponível o CTM" e não cita número nem data. Resolver exige OCR do PDF ou pedido ao município.</li>
+      <li><b>Várzea Alegre, anomalia de nomenclatura:</b> o CTM consta como "Lei Complementar nº 601/2010", numeração de três dígitos típica de lei ordinária — municípios costumam reiniciar a série de leis complementares em 001. Pode ser erro de transcrição na cópia do MPCE. Registrado como consta na fonte.</li>
+      <li><b>ISS, a lacuna se repete nas posições 43 a 50:</b> nenhuma alíquota geral confirmada, pelo mesmo motivo de sempre — Santa Quitéria (art. 54), Várzea Alegre (art. 34), Pentecoste (art. 59) e Ipu (art. 47) remetem todos à "Tabela II", anexo que não acompanha o PDF publicado. Em Pedra Branca o PDF tem 189 páginas e a extração parou na 50, antes das tabelas.</li>
+      <li><b>Posições 51 a 58 (adicionadas em 21/09):</b> aqui a série populacional quebra. As páginas do IBGE consultadas hoje já exibem uma estimativa mais recente que a de 1º/07/2024 usada nas linhas anteriores. Missão Velha, Ipueiras e Mombaça batem exatamente com a série antiga; <b>Massapê não</b> — 40.037 hoje contra 39.840 na série anterior, o que o colocaria tecnicamente acima do corte de Pentecoste (40.081... por 44 habitantes, abaixo). Registrei 40.037 e a divergência.</li>
+      <li><b>O vão entre Baturité e Bela Cruz:</b> há 2.500 habitantes sem nenhum município entre 37.308 e 34.776. Foram conferidos um a um os cinco candidatos mais plausíveis — Jaguaruana (33.159), Santana do Acaraú (32.218), Tabuleiro do Norte (32.122), Nova Russas (32.089) e Redenção (28.405) — e nenhum cai nessa faixa. A ordem 55 a 58 é sólida, mas falta uma conferência final contra a planilha completa dos 184.</li>
+      <li><b>A API SIDRA do IBGE é armadilha, e foi descartada.</b> Consultada por leitura automatizada, devolveu Eusébio com 80.304 e Itaitinga com 70.679 — ambos grosseiramente errados — e divergências de 200 a 500 habitantes em Massapê, Missão Velha e Mombaça. Toda a leva 51 a 58 foi conferida município a município nas páginas HTML do IBGE.</li>
+      <li><b>O MPCE está desatualizado em três dos oito, e no mesmo sentido:</b> o arquivo de Massapê é a Lei 546/2005, superada pela LC 005/2013; o de Bela Cruz é a Lei 571/2004, superada pela LC 001/2021; o de Ipueiras é a Lei 566/2003, superada pela Lei 841/2014. Quem datar o CTM pelo nome do arquivo do MPCE erra por 8, 17 e 11 anos.</li>
+      <li><b>Ubajara, ambiguidade de critério:</b> o CTM originário é a Lei nº 187, de 22/08/1975; o texto consolidado em uso é a Lei nº 1.056, de 16/12/2013, que o arquivo do MPCE guarda como se fosse o código. Registrei os dois — se o critério da base for "lei que institui", é 1975; se for "texto vigente", é 2013.</li>
+      <li><b>Missão Velha, a lacuna desta leva:</b> a Câmara publica o documento "Código Tributário Municipal" com data de 24/01/2010, e o nome do arquivo ("0912010") sugere Lei 091/2010 — inferência a partir de nome de arquivo, que não registrei como confirmada. O PDF da Câmara está bloqueado por robots.txt, o do MPCE passa de 30 MB e o SAPL da Câmara tem certificado SSL com hostname inválido.</li>
+      <li><b>ISS, terceira leva seguida sem uma única alíquota geral confirmada.</b> A causa agora tem nome duplo: os anexos continuam ausentes (Baturité art. 55, Ubajara art. 103, Bela Cruz art. 36 e Massapê art. 38 remetem todos a tabelas que não acompanham o PDF) e os portais municipais cearenses que rodam o CMS <span class="mono">leis.php</span> bloqueiam o diretório <span class="mono">/arquivos/</span> no robots.txt — dá para ler a ficha da lei, não o PDF. O alvo mais promissor para furar isso é a LC 853/2025 de Mombaça, cuja ementa diz expressamente que modifica alíquotas de ISSQN.</li>
+      <li><b>A armadilha do 0,5% se confirmou, e é mais ampla do que se pensava:</b> no texto de Bela Cruz o "0,50%" do art. 15 é de <b>IPTU</b> — não de ISS nem de ITBI. Alíquota pequena solta num CTM cearense quase nunca é ISS; o ISS mora nos anexos.</li>
+      <li><b>Missão Velha, lacuna fechada em 21/09 — e não por nome de arquivo.</b> O CTM é a <b>Lei nº 091, de 24/01/2010</b>. O que fecha não é o fragmento "0912010" do nome do PDF, e sim a sequência oficial: percorrida a série de 2010 no acervo paginado da Câmara, as leis 087, 088, 089, 090 e 092/2010 estão todas lá, e o 091 é exatamente o buraco — preenchido pelo CTM, que o portal cataloga sob tipo próprio. Duas ressalvas honestas: o portal nunca escreve "Lei nº 091/2010" com todas as letras, e as leis vizinhas constam de 02/12/2010 enquanto o CTM consta de 24/01/2010, o que sugere data de sanção real contra data de cadastro em lote.</li>
+      <li><b>Mombaça: a norma da alíquota está identificada, o percentual não.</b> A alíquota vigente de ISS é a do Anexo I da LC 750/2016 com a redação da LC 853/2025, de 01/07/2025. O PDF está bloqueado por robots.txt nos dois hosts da prefeitura, o SAPL da Câmara não cadastrou a LC 853, e o PDF do MPCE é digitalização sem camada de texto. Saber qual norma fixa a alíquota já é mais do que a base tinha.</li>
+      <li><b>O caminho que resolve a coluna ISS inteira foi encontrado em 21/09 — e não cabe nesta ferramenta.</b> O Portal Nacional da NFS-e publicou em 03/09/2026 a base de alíquotas de ISSQN dos 5.571 municípios, em planilhas por UF, com código IBGE, código de serviço, incidência, alíquota e vigência. É a fonte oficial que dispensa abrir 184 códigos tributários. O arquivo do Ceará não é legível por leitura web — cada município ocupa centenas de linhas e a conversão para em Acaraú, o terceiro em ordem alfabética. Resolver exige baixar o CSV e cruzá-lo pelo código IBGE, que a base já traz em quase todas as linhas. É o próximo passo de maior retorno deste painel.</li>
+      <li><b>Jaguaribe é uma falha na própria base, e fica registrada:</b> a página do IBGE dá a Jaguaribe (IBGE 2306900) <b>35.143 hab.</b>, acima dos 34.266 de Paraipaba — ou seja, ele deveria estar entre as posições já preenchidas e não está. Pode ser salto na montagem da faixa 50-58 ou efeito da divergência de safra da nota seguinte. Não foi incluído nesta leva porque o corte pedido era abaixo de Paraipaba; é o primeiro a resolver na próxima.</li>
+      <li><b>Posições 59 a 66 (adicionadas em 22/09) — a safra do IBGE agora circula em três versões.</b> Na mesma data de consulta, as páginas do IBGE Cidades rotulam Paraipaba, Jaguaruana, Parambu, Santana do Acaraú, Lavras da Mangabeira, Tabuleiro do Norte e Nova Russas como <b>[2026]</b>, e Novo Oriente, Jardim e Jaguaribe como <b>[2025]</b>; a página de Aurora cita nota de fonte com referência em 1º/07/<b>2024</b>. Consequência: as posições 65 e 66 estão comparadas em safra diferente das anteriores, e o bloco de 32 mil é frágil — Santana 32.218, Lavras 32.201 e Tabuleiro 32.196, três municípios separados por 22 habitantes.</li>
+      <li><b>O corte 59-66 foi fechado por conferência, não por estimativa.</b> Ficaram fora, com população conferida uma a uma: Redenção 28.405, Caririaçu 27.532, Marco 27.283, Milagres 26.819, Aracoiaba 26.752, Campos Sales 26.049, Tamboril 25.287, Ocara 25.272, Guaiúba 25.158, Senador Pompeu 25.108, Ibiapina 24.689, Jucás 24.624, Independência 24.463, Aurora 24.244, Cedro 22.455, Quiterianópolis 20.545 e Orós 19.871. A margem mais apertada é Jardim (28.801) sobre Redenção (28.405), por 396 habitantes — e sensível à divergência de safra acima.</li>
+      <li><b>Três lacunas reais nesta leva, com motivo técnico:</b> em <b>Parambu</b> e <b>Santana do Acaraú</b> o CTM existe e está identificado como documento, mas número e data não: o PDF de Parambu é apenas-imagem sem OCR e o de Santana, no MPCE, passa de 30 MB. <b>Tabuleiro do Norte</b> é pior: nem a Prefeitura (2.435 leis) nem o SAPL da Câmara (2.756 normas) registram norma instituidora de CTM, e o único texto é a digitalização ilegível do MPCE. Nos três casos o caminho é OCR ou pedido à secretaria de finanças.</li>
+      <li><b>O MPCE errou em sentido novo nesta leva: está desatualizado, não só velho.</b> Em <b>Jardim</b> o arquivo é a Lei 195/2016 quando o vigente é a LC 011/2023; em <b>Novo Oriente</b> é a LC 01/2017 quando o vigente é a LC 005/2025 — duas gerações de atraso, com a LC 001/2023 no meio. Somado a Massapê, Bela Cruz e Ipueiras da leva anterior, são cinco municípios em que datar o CTM pelo arquivo do MPCE erra por anos. <b>Parambu</b> e <b>Nova Russas</b> simplesmente não constam do repositório.</li>
+      <li><b>A armadilha do arquivo alterador se repetiu duas vezes:</b> no MPCE, a Lei 392/2015 de Lavras da Mangabeira é <b>anistia</b>, e as Leis 616/2016, 726/2017 e 761/2018 de Jaguaruana são rotuladas "Alteração". Nenhuma é o código. Em Tabuleiro do Norte, a Lei 2.430/2026 de 20/02/2026 institui <b>honorários advocatícios na cobrança da dívida ativa</b> — matéria de dívida ativa, não CTM.</li>
+      <li><b>ISS, quarta leva seguida sem uma única alíquota geral confirmada.</b> A causa é a mesma de 21/09 e agora está quantificada: o CMS <span class="mono">leis.php</span> bloqueia o diretório <span class="mono">/arquivos/</span> em <b>cinco dos oito</b> — Jaguaruana, Lavras da Mangabeira, Nova Russas, Jardim e a Câmara de Novo Oriente. Dá para ler número, data e ementa na ficha; não dá para abrir o texto. O único número de ISS obtido é a alíquota <b>específica</b> de 2% de Novo Oriente para loterias e plataformas tecnológicas (LC 004/2025, de 25/07/2025) — não é a geral e não foi lançada como tal.</li>
+      <li><b>LC 236/2026, enquadramento apurado para os oito:</b> teto de multas no art. 113-A, §1º (75% em regra, 100% em fraude, sonegação ou conluio, 150% em reincidência); duplo grau administrativo exigido no art. 208-A, §1º apenas de entes com mais de 100 mil habitantes; prazo de adaptação de dois anos no art. 211-B. Os oito têm entre 28,8 mil e 33,2 mil habitantes: <b>duplo grau facultativo para todos</b>, e nenhum CTM é posterior a 04/09/2026 — nenhum está adaptado.</li>
+      <li><b>Posições 67 a 74 (adicionadas em 23/09) — a leva começa consertando a própria base.</b> <b>Jaguaribe</b> entra fora de ordem de população: com 35.161 habitantes ele pertence à faixa das posições 50 a 58, de onde foi omitido por salto na montagem, falha registrada em 21/09. Em vez de renumerar setenta linhas, entrou como 67 com a ressalva anotada — a ordem por população deixa de ser estritamente decrescente a partir daqui, e isso está dito, não escondido.</li>
+      <li><b>A safra do IBGE continua em duas versões, e agora o efeito é mensurável.</b> As páginas exibem <b>[2026]</b> para Jaguaribe (35.161), Redenção (28.405), Marco (27.283) e Campos Sales (26.017) e <b>[2025]</b> para Caririaçu (27.532), Milagres (26.819), Aracoiaba (26.752) e Tamboril (25.287). Dois números mudaram em relação à série anterior usada na base: Jaguaribe era 35.143 e Campos Sales era 26.049. Registrei os valores novos; quem precisar de série homogênea tem de escolher uma safra e refazer a coluna inteira.</li>
+      <li><b>A coluna ISS finalmente saiu do zero — em um município de oito.</b> <b>Marco</b> é o primeiro com alíquota geral confirmada: 5% em regra, 3% na construção civil (item 7.02) e 2% em itens específicos. E só foi possível porque a LC 014/2017 <b>reeditou o Anexo por inteiro</b> — a LC 004/2009 remete a um Anexo I que não acompanha o PDF, como sempre. A lição se confirma pela quinta leva: no CTM cearense a alíquota mora no anexo, e o anexo raramente é publicado junto. As três causas das sete lacunas foram documentadas uma a uma: robots.txt no diretório /arquivos/ (Redenção, Aracoiaba, Tamboril), PDF digitalizado acima de 30 MB (Jaguaribe, Campos Sales) e PDF sem camada de texto no MPCE (Redenção, Caririaçu).</li>
+      <li><b>Redenção é o achado da leva, e não pelo código:</b> a <b>Lei nº 2.058, de 03/06/2026</b>, redefine base de cálculo e alíquotas do ISSQN para serviços de engenharia e construção civil. É o único ato municipal cearense de 2026 mexendo em alíquota que esta base localizou até hoje — e confirma que o municipal do interior legisla, mas não é lido por nenhum diário pesquisável. Ressalva de espécie normativa: o portal cadastra o CTM como "Lei Municipal 1663/2017", e a própria Lei 2.058/2026 se refere a ele como "Lei Complementar nº 1.663/2017". Adotei a grafia do registro primário.</li>
+      <li><b>Duas lacunas honestas nesta leva, ambas por ausência do texto, não por preguiça.</b> Em <b>Caririaçu</b> o número 270/2000 vem só da ementa da Lei 574/2013, que o cita; o banco da Câmara cobre 769 registros de 1984 a 2026 e o filtro por ementa devolve exatamente um resultado — a própria alteradora. Em <b>Tamboril</b> o seletor de exercícios do portal oferece 1990, 2007, 2010 e 2017 a 2026: o ano de 2003 simplesmente não existe na base, e a data de 29/12/2003 é confiável porque vem transcrita na ementa da Lei 15/2017. Nos dois casos a marca é <b>sec</b>, não <b>conf</b>.</li>
+      <li><b>O repositório do MPCE errou em quatro dos oito, e agora já são nove municípios em que datar o CTM pelo arquivo dele erra por anos.</b> Em <b>Jaguaribe</b> só há leis alteradoras (1.193/2014 e 1.429/2018) — o CTM de 2017 não está lá. Em <b>Aracoiaba</b> os dois arquivos (Lei 629/1997 e Lei 1.239/2017) foram superados pela Lei 1.324/2021. Em <b>Marco</b>, o arquivo rotulado "Alteracao03" é a LC 017/2018, que trata de <b>COSIP</b> — os percentuais nele não são ISS. Em <b>Tamboril</b> não há arquivo nenhum.</li>
+      <li><b>Nova armadilha catalogada: o nome do arquivo contradiz a ficha.</b> Em Aracoiaba, o PDF anexado à ficha da Lei <b>1.324</b>/2021 chama-se <span class="mono">LEIS MUNICIPAIS_1323_2021_0000001.pdf</span>. Prevalece a ficha — número, data e ementa —, nunca o nome do arquivo. É a segunda vez que essa regra salva a base de um número errado.</li>
+      <li><b>Verificação negativa registrada para os oito:</b> varridas as listagens de 2024 a 2026 dos portais (Jaguaribe 1.609 registros, Marco 730, Aracoiaba 684, Campos Sales 537, Tamboril 439), <b>nenhum município tem CTM novo nem lei de adaptação à LC 236/2026</b> até 23/09/2026. Os oito têm entre 25 mil e 35 mil habitantes: duplo grau administrativo facultativo para todos, e os oito códigos são anteriores a 04/09/2026 — nenhum adaptado, todos dentro do prazo que vence em 04/09/2028.</li>
+      <li><b>Posições 75 a 82 (adicionadas em 23/09, 2ª rodada) — a safra do IBGE virou no meio da consulta.</b> As mesmas páginas devolveram [2025] numa leitura e [2026] na seguinte; na versão atualizada todas mostram <b>[2026]</b>. Nela, Tamboril tem 25.314 e ficam acima dele <b>Forquilha (25.460, IBGE 2304350)</b> e <b>Ocara (25.322, IBGE 2309458)</b>, que não estão na base. Entram na próxima leva, como Jaguaribe entrou. Mudaram também Guaiúba (25.158 → 25.227) e Senador Pompeu (25.108 → 25.076). Pindoretama e Irauçuba, fora da lista de candidatos anterior, entraram por conferência.</li>
+      <li><b>ISS, sexta leva sem alíquota geral confirmada.</b> Os PDFs em /arquivos/ dos portais leis.php seguem bloqueados; no MPCE, Guaiúba, Irauçuba e Jucás dão 404 e Senador Pompeu, Ibiapina, Independência e Aurora são imagem sem texto.</li>
+      <li><b>MPCE desatualizado outra vez:</b> o arquivo de Pindoretama é a Lei 167/2000, que altera a Lei 32/1991; o CTM vigente é a Lei 474/2017. São dez municípios com esse problema. Em Senador Pompeu o código é a Lei 1.804/2025 — quem cita a LC 1.464/2017 está superado.</li>
+      <li><b>Numeração a conferir:</b> Aurora (001/2019) e Independência (07/2013) têm números baixos demais para a série de leis ordinárias da época — provável série própria de lei complementar, não confirmada. Por isso Aurora está como secundária.</li>
+      <li><b>Jucás:</b> o portal da prefeitura só tem leis de 2022 em diante; o CTM foi confirmado no sistema da Câmara, que não tem link fixo por norma. O link aponta para a busca filtrada.</li>
+      <li><b>O municipal cearense legisla, e agora há prova em série.</b> A varredura dos oito portais trouxe seis atos tributários de 2026: Refis em Guaiúba (Lei 1.308, 01/09), Jucás (Lei 475, 22/05) e Independência (Lei 700, 07/04); isenção de ITBI e IPTU para imóveis da COHAB-CE em Jucás (LC 462, 27/02); alteração do CTM de Irauçuba (LC 2.280, 15/07); e taxa de licença ambiental em Aurora (Lei 699, 20/07). Só o de Guaiúba cai na janela de 30 dias do boletim.</li>
+      <li><b>Datas das INs da SEFAZ-CE: o padrão foi decifrado em 21/09.</b> O ITCNET registra a data de <b>publicação</b> no DOE e o Econet vem sistematicamente <b>um dia à frente</b> — não é uma base dando assinatura e a outra publicação, como se supunha. A calibração veio do texto integral das INs 83 e 84 no TaxesBrasil, que declaram as duas datas: assinatura em 19/08, publicação em 25/08. Consequência prática: onde as duas bases divergirem em um dia, vale a data do ITCNET.</li>
+    </ol>
+    <p style="margin-top:12px"><b>Pistas derrubadas na conferência</b>, e vale registrar: em Aracati, a LC 003/2017 que parecia ser o novo código tributário trata de reestruturação administrativa; em Trairi, o mesmo aconteceu com a LC 002/2021; em Tabuleiro do Norte, a LC 002/2021 é taxa de licença ambiental. Uma base montada por busca automática teria registrado as três como Código Tributário. <b>Em 22/09 caiu a maior delas:</b> a isenção de ITBI e IPTU para 36 conjuntos habitacionais da COHAB em Fortaleza, que circulava como novidade e seria o primeiro ato municipal cearense do radar, é de <b>outubro de 2025</b> — a Prefeitura noticiou a sanção em 16/10/2025 e as bases apontam as Leis municipais nº 11.588 e 11.589, de 15/10/2025. Não é ato do período e não entrou no boletim.</p>
+    <p style="margin-top:10px">O repositório de Códigos Tributários Municipais do <a href="https://mpce.mp.br/institucional/centros-de-apoio-operacional/caodpp/projetoscaodpp/saudefiscal/codigo-tributario-municipios/" target="_blank" rel="noopener">MPCE/CAODPP</a> tem PDFs de mais de 180 municípios cearenses, mas os textos são de 2019: servem para identificar e datar a lei-base, não para a versão vigente.</p>
+  </div>
+</section>
+
+<section id="p-fontes" role="tabpanel" aria-labelledby="tab-fontes" hidden>
+  <p class="section-lead">Teste feito em 19/09/2026 e reconferido em 23/09/2026. A divisão abaixo é o que determina o custo real de operar isto: o que responde a consulta automatizada pode ser lido direto; o que bloqueia exige coletor próprio ou entra marcado como fonte a conferir.</p>
+  <h2>Respondem a acesso automatizado</h2>
+  <p class="h2sub">Lidas direto, viram item com fonte oficial.</p>
+  <div class="srcgrid" id="src-live"></div>
+  <h2>Bloqueiam acesso automatizado</h2>
+  <p class="h2sub">Entram por busca na web e saem marcadas "conferir no diário oficial". Num produto real, exigem coletor próprio num servidor.</p>
+  <div class="srcgrid" id="src-blocked"></div>
+  <div class="note" style="margin-top:26px"><b>Lacuna do Ceará: metade resolvida em 19/09.</b> O estadual saiu do escuro. O DOE-CE tem URL de PDF previsível — <span class="mono">imagens.seplag.ce.gov.br/PDF/AAAAMMDD/doAAAAMMDDp01.pdf</span> — e é legível por máquina: foi assim que o Decreto nº 37.542/2026 entrou com fonte oficial. As instruções normativas da SEFAZ-CE ainda dependem de índice secundário (itcnet, TaxesBrasil), e as datas de assinatura frequentemente não são confirmáveis.<br><br><b>O municipal cearense continua sem cobertura — terceira checagem, mesmo resultado.</b> Entre 21/08 e 21/09/2026 nenhum ato tributário de município do Ceará foi confirmado. O Diário Oficial dos Municípios da APRECE carrega, mas só entrega conteúdo por PDF assinado e busca via POST, devolvendo "nenhuma matéria encontrada" pela interface; a SEFIN de Fortaleza bloqueia robô em todas as rotas; o SAPL da Câmara de Fortaleza responde, mas a busca por ano=2026 volta vazia e por assunto só traz planos de cargos. Os portais das prefeituras do interior que rodam o CMS <span class="mono">leis.php</span> expõem a ficha da lei e bloqueiam o PDF. Isso é ausência de leitura, não ausência de ato — e é a lacuna que um coletor próprio resolveria primeiro.<br><br><b>Novidade de 23/09: o ponto cego de ontem era do servidor, não do diário.</b> O caderno p01 da edição de 22/09 devolvera HTTP 300 em duas tentativas ontem; hoje abriu normalmente e foi lido inteiro — edição nº 176, Série 3, sem nenhum ato tributário e sem decreto estadual. A lição operacional é que o HTTP 300 da SEPLAG é intermitente e <b>não significa ausência de edição</b>: vale repetir a tentativa no dia seguinte antes de declarar um caderno perdido. Quando a ausência é real, o servidor devolve o mesmo 300 mas lista as datas vizinhas como alternativas — foi o caso de 23/09, que simplesmente não foi publicado.<br><br><b>Novidade de 22/09: o DOE-CE tem atraso de um dia útil.</b> A edição de 21/09 (nº 175) foi lida e traz só o Decreto nº 37.558, de crédito suplementar — o estadual de segunda-feira está fechado e nada tributário saiu. A de hoje, 22/09, ainda não estava no servidor: o diretório <span class="mono">/PDF/20260922/</span> devolve HTTP 300. Conclusão operacional: o PDF previsível existe, mas só no dia seguinte — o boletim do dia sempre lerá o DOE de véspera.<br><br><b>Novidade de 21/09: o DOE-CE não serve para as INs da SEFAZ.</b> As páginas 01 das edições de 15 a 18/09 foram lidas uma a uma e nenhuma traz instrução normativa da SEFAZ-CE — elas saem em outro caderno. O caminho do PDF previsível continua valendo para decretos estaduais, mas a série de INs segue dependendo de índice secundário (ITCNET, Econet), que é onde ela de fato aparece.</div>
+</section>
+
+<footer>
+  <p>Radar Tributário Ceará · dados coletados em 23/09/2026 · atos oficiais não têm proteção autoral (Lei 9.610/98, art. 8º, IV). Itens marcados "conferir" vieram de fonte secundária e precisam de conferência no diário oficial antes de fundamentar qualquer ato.</p>
+</footer>
+</main>
+<script>
+const ITENS = [
+ {d:"2026-09-01",nv:false,esf:"Municipal",uf:"CE/Guaiúba",ft:"Legislativo",tema:"Parcelamento",imp:"Baixo",of:true,rt:false,
+  prazo:"Prazo de adesão não confirmado — texto integral bloqueado",
+  t:"Guaiúba institui o Refis 2026 em caráter geral",
+  r:"A Lei municipal nº 1.308, de 01/09/2026, cria o Programa de Regularização Fiscal 2026 para débitos com o município. É o primeiro ato tributário municipal cearense da janela de 30 dias confirmado em portal oficial. Descontos e prazo de adesão não foram lidos: o PDF está em diretório bloqueado por robots.txt. Contribuintes com débito em Guaiúba devem consultar a Secretaria de Finanças.",
+  fn:"Lei municipal nº 1.308, de 01/09/2026 — ficha no portal da Prefeitura de Guaiúba",fu:"https://www.guaiuba.ce.gov.br/leis.php?id=2541",lk:"ato"},
+
+ {d:"2026-09-22",nv:true,esf:"Federal",uf:"",ft:"Judiciário/Administrativo",tema:"Processo fiscal",imp:"Alto",of:true,rt:false,
+  prazo:"Só produz efeito depois da publicação no DOU",
+  t:"CARF cancela a Súmula nº 147 e derruba a cumulação de multa isolada com multa de ofício no carnê-leão",
+  r:"A 2ª Turma da Câmara Superior de Recursos Fiscais decidiu por unanimidade, em sessão de 21/09/2026, cancelar o enunciado que admitia aplicar ao mesmo tempo a multa isolada de 50% por falta de recolhimento do carnê-leão e a multa de ofício de 75% sobre rendimentos lançados no ajuste anual do IRPF. O fundamento é a jurisprudência do STJ e a orientação já adotada na Administração Federal. Quem tem processo pendente no CARF ou na DRJ com essa cumulação deve peticionar noticiando o cancelamento; o enunciado só sai do acervo com a publicação no DOU, não confirmada até 23/09.",
+  fn:"Sessão da 2ª Turma da CSRF de 21/09/2026 — notícia oficial do CARF de 22/09/2026",fu:"https://www.gov.br/carf/pt-br/assuntos/novas-noticias/carf-aprova-cancelamento-da-sumula-no-147",lk:"noticia"},
+
+ {d:"2026-09-23",nv:true,esf:"Federal",uf:"",ft:"Judiciário/Administrativo",tema:"PIS/COFINS",imp:"Alto",of:true,rt:false,
+  t:"Solução de Consulta Cosit nº 180/2026 tira o crédito presumido de ICMS da base da Cofins cumulativa",
+  r:"No regime cumulativo a Cofins incide sobre o faturamento, e o crédito presumido de ICMS é subvenção governamental que não decorre do objeto principal da empresa — classifica-se em outros resultados operacionais e fica fora da base. O entendimento se mantém depois da Lei nº 14.789/2023. É das poucas decisões recentes a favor do contribuinte: vale revisar a base da Cofins cumulativa e avaliar a recuperação do que foi recolhido a maior.",
+  fn:"SC Cosit nº 180, publicada em 23/09/2026 (base oficial de normas da RFB)",fu:"https://normasinternet2.receita.fazenda.gov.br/#/consulta/externa/153667/",lk:"ato"},
+
+ {d:"2026-09-23",nv:true,esf:"Federal",uf:"",ft:"Judiciário/Administrativo",tema:"PIS/COFINS",imp:"Médio",of:true,rt:false,
+  t:"Solução de Consulta Cosit nº 177/2026: energia autogerada não gera crédito de PIS/Cofins",
+  r:"A energia elétrica gerada e consumida pela própria pessoa jurídica não se enquadra nas hipóteses de crédito básico do regime não cumulativo, que tratam de dispêndio com energia adquirida de terceiros. Atinge indústria com cogeração, solar ou biomassa — crédito já tomado sobre autogeração fica exposto a glosa.",
+  fn:"SC Cosit nº 177, publicada em 23/09/2026 (base oficial de normas da RFB)",fu:"https://normasinternet2.receita.fazenda.gov.br/#/consulta/externa/153678/",lk:"ato"},
+
+ {d:"2026-09-22",nv:true,esf:"Federal",uf:"",ft:"Judiciário/Administrativo",tema:"PIS/COFINS",imp:"Médio",of:true,rt:false,
+  t:"Duas consultas delimitam o que a Lei nº 14.967/2024 empurrou para o regime cumulativo",
+  r:"A SC Cosit nº 180 não é a única do par: a SC Cosit nº 176/2026, de 22/09, decidiu que o monitoramento de vias públicas por equipamento informatizado para fiscalização de trânsito não é segurança privada e permanece no não cumulativo; já a SC Disit/SRRF08 nº 8.017/2026, de 21/09, colocou o monitoramento de sistemas eletrônicos de segurança no cumulativo. Quem mudou de regime por conta da Lei 14.967/2024 precisa reconferir o enquadramento — a de Disit tem alcance regional, a de Cosit é geral.",
+  fn:"SC Cosit nº 176, de 22/09/2026, e SC Disit/SRRF08 nº 8.017, de 21/09/2026 (base oficial de normas da RFB)",fu:"https://normasinternet2.receita.fazenda.gov.br/#/consulta/externa/153661/",lk:"ato"},
+
+ {d:"2026-09-22",nv:true,esf:"Federal",uf:"",ft:"Órgão fazendário",tema:"Simples Nacional",imp:"Alto",of:true,rt:true,
+  prazo:"30 dias contados do indeferimento",
+  t:"Receita indefere 119.549 pedidos de opção pelo Simples Nacional para 2027",
+  r:"Na posição de 18/09, dos 181.172 pedidos de ingresso no Simples com efeitos em 01/01/2027, 61.623 foram deferidos e 119.549 indeferidos. No mesmo balanço aparecem 165.034 pedidos de opção pelo regime regular de IBS e CBS. Quem foi indeferido tem 30 dias contados do indeferimento para sanar os impedimentos, sob pena de rejeição definitiva — é varredura de carteira para esta semana.",
+  fn:"Notícia RFB de 22/09/2026, com dados posicionados em 18/09/2026",fu:"https://www.gov.br/receitafederal/pt-br/assuntos/noticias/2026/setembro/receita-federal-divulga-balanco-de-solicitacoes-de-opcao-pelo-simples-nacional-e-pelo-regime-regular-do-ibs-e-da-cbs",lk:"noticia"},
+
+ {d:"2026-09-22",nv:true,esf:"Federal",uf:"",ft:"Órgão fazendário",tema:"Obrigação acessória",imp:"Médio",of:true,rt:false,
+  t:"ADE Cocad nº 74/2026 dispensa documentos em atos cadastrais de imóvel rural",
+  r:"Revoga o inciso VIII e o § 4º do art. 2º do ADE Cocad nº 2/2024, eliminando exigência documental na análise e no processamento de atos cadastrais de imóvel rural pelo serviço Requerimentos Web, no Portal de Serviços da Receita. Simplificação de efeito imediato para quem opera Cafir e ITR, inclusive nos requerimentos em curso.",
+  fn:"ADE Cocad nº 74, publicado em 22/09/2026 (base oficial de normas da RFB)",fu:"https://normasinternet2.receita.fazenda.gov.br/#/consulta/externa/153663/",lk:"ato"},
+
+ {d:"2026-09-22",nv:true,esf:"Estadual+Municipal",uf:"Nacional",ft:"Documentação técnica",tema:"Reforma Tributária",imp:"Médio",of:true,rt:true,
+  t:"DeRE amplia o limite de contas dos eventos D-1011 e D-1101 na produção restrita",
+  r:"Os esquemas XSD foram atualizados nos servidores na noite de 21/09 e a recepção dos XML com os novos limites vale desde 22/09: o grupo infoConta do evento D-1011, plano geral de contas comentado, sobe de 50 mil para 150 mil contas, e o D-1101, balancete mensal, de 10 mil para 90 mil. Empresas-piloto e desenvolvedores precisam baixar os novos XSD e revalidar a geração dos arquivos antes do próximo envio.",
+  fn:"Comunicado do CGIBS de 22/09/2026 — atualização dos esquemas XSD da DeRE em produção restrita",fu:"https://www.cgibs.gov.br/dere-atualizacao-dos-esquemas-xsd-dos-eventos-d-1011-e-d-1101-na-producao-restrita",lk:"noticia"},
+
+ {d:"2026-09-21",nv:true,esf:"Federal",uf:"",ft:"Diário Oficial",tema:"Combustíveis",imp:"Médio",of:true,rt:false,
+  prazo:"Valor por litro redefinido a cada ciclo de 30 dias",
+  t:"Decreto nº 13.121/2026 regulamenta a subvenção econômica ao óleo diesel",
+  r:"Regulamenta a MP nº 1.391, de 11/09/2026, que autoriza subvenção a produtores e importadores de óleo diesel e suas correntes enquanto durar a instabilidade de oferta. Vigora desde 21/09/2026; a subvenção opera em ciclos de 30 dias renováveis, com o valor por litro fixado por ato do Ministro da Fazenda, e exige repasse ao preço de venda e reporte das operações à ANP.",
+  fn:"Decreto nº 13.121, de 21/09/2026",fu:"https://www.planalto.gov.br/ccivil_03/_ato2023-2026/2026/decreto/d13121.htm",lk:"ato"},
+
+ {d:"2026-09-22",nv:true,esf:"Estadual",uf:"MT/PA/PI/RJ",ft:"Fonte secundária",tema:"ICMS",imp:"Baixo",of:false,rt:false,
+  t:"Despacho CONFAZ nº 44/2026 publica os Convênios ICMS 109, 110 e 111",
+  r:"Aprovados na 431ª Reunião Extraordinária, de 21/09/2026: o Convênio 109 amplia para o período de 01/01/2020 a 31/12/2025 a autorização para Mato Grosso conceder anistia e remissão de ICMS por descumprimento de requisito formal; o 110 permite ao Pará aderir ao Convênio ICMS nº 66/1994, de isenção de polpa de cupuaçu e açaí; o 111 autoriza Piauí e Rio de Janeiro a instituir remissão, anistia e parcelamento. Nenhum alcança o Ceará, e os efeitos dependem de internalização em cada estado.",
+  fn:"Despacho CONFAZ nº 44/2026 (DOU 22/09/2026), Convênios ICMS 109, 110 e 111, de 21/09/2026 — fonte secundária, conferir no diário oficial",fu:"https://www.confaz.fazenda.gov.br/legislacao/convenios/2026",lk:"indice"},
+
+ {d:"2026-09-18",nv:false,esf:"Federal",uf:"",ft:"Judiciário/Administrativo",tema:"ICMS",imp:"Alto",of:false,rt:false,
+  prazo:"Sessão virtual encerra em 25/09/2026",
+  t:"STF forma maioria contra o ICMS sobre a subvenção da tarifa social de energia (Tema 1.113)",
+  r:"No RE 990.115, rel. Cristiano Zanin, o plenário virtual reuniu 6 votos a 1 pela não incidência do ICMS sobre a subvenção econômica federal da tarifa social de baixa renda, por se tratar de ressarcimento e não de preço. A divergência é do ministro Flávio Dino. A sessão virtual abriu em 18/09 e encerra em 25/09 — a tese ainda não está fixada. Distribuidoras podem levantar o indébito dos últimos cinco anos, mas convém aguardar eventual modulação antes de compensar.",
+  fn:"RE 990.115, Tema 1.113 — sessão virtual de 18 a 25/09/2026; placar de 18/09, sem tese fixada — fonte secundária",fu:"https://conjur.com.br/2026-set-18/stf-forma-maioria-contra-icms-sobre-subvencao-por-tarifa-social-de-energia/",lk:"noticia"},
+
+ {d:"2026-09-14",nv:false,esf:"Estadual",uf:"CE",ft:"Diário Oficial",tema:"Repartição de receitas",imp:"Médio",of:true,rt:false,
+  t:"Portaria SEFAZ-CE nº 262/2026 divulga a cota-parte municipal de ICMS, IPVA e IPI-Exportação de julho",
+  r:"Publicada no DOE de 14/09, distribui aos municípios cearenses a parcela de ICMS, IPVA e IPI-Exportação apurada em julho de 2026. É base de caixa das prefeituras e referência para conferir o índice de participação; divergência se impugna junto à SEFAZ. No mesmo caderno saíram atos declaratórios de baixa de ofício de inscrição estadual e editais de convocação para regularização cadastral, que correm prazo contra os contribuintes intimados.",
+  fn:"Portaria SEFAZ-CE nº 262/2026 (DOE-CE de 14/09/2026)",fu:"https://imagens.seplag.ce.gov.br/PDF/20260914/do20260914p02.pdf",lk:"ato"},
+
+ {d:"2026-09-10",nv:false,esf:"Federal",uf:"",ft:"Diário Oficial",tema:"Aduaneiro",imp:"Alto",of:true,rt:false,
+  prazo:"Regulamento dos medicamentos de doenças raras em até 180 dias",
+  t:"Lei nº 15.502/2026 reescreve o regime das remessas postais e encomendas internacionais",
+  r:"Conversão da MP nº 1.357/2026. Altera o Decreto-Lei nº 1.804/1980: eleva o teto por remessa a US$ 3.000, admite alíquota constante ou progressiva conforme o valor e autoriza o Ministro da Fazenda a reduzir a zero a alíquota até US$ 50 e a fixar teto de 30% até US$ 3.000. Impõe programa de conformidade obrigatório a plataformas e operadores logísticos — detecção de subfaturamento, fragmentação artificial e ocultação do remetente, rastreabilidade do vendedor e cooperação com a Receita. Exige revisão de compliance aduaneiro agora.",
+  fn:"Lei nº 15.502, de 10/09/2026",fu:"https://www.planalto.gov.br/ccivil_03/_ato2023-2026/2026/lei/l15502.htm",lk:"ato"},
+
+ {d:"2026-09-03",nv:false,esf:"Federal",uf:"",ft:"Legislativo",tema:"Reforma Tributária",imp:"Médio",of:true,rt:true,
+  t:"PLP 248/2026 quer ressarcimento instantâneo de créditos de IBS e CBS",
+  r:"Altera a LC 214/2025 para que o ressarcimento de créditos de IBS e CBS ocorra no mesmo prazo e na mesma sistemática do recolhimento dos tributos. Em tramitação e sem eficácia — aguardando despacho —, mas muda o fluxo de caixa de exportadores e de quem acumula crédito estrutural se avançar.",
+  fn:"PLP 248/2026, apresentado em 03/09/2026",fu:"https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2645664",lk:"ato"},
+
+ {d:"2026-09-22",nv:false,esf:"Federal",uf:"",ft:"Judiciário/Administrativo",tema:"IRPJ/CSLL",imp:"Alto",of:true,rt:false,
+  t:"Solução de Consulta Cosit nº 179/2026: crédito-prêmio de IPI ganho na Justiça é receita nova e tributável",
+  r:"O valor de crédito-prêmio de IPI reconhecido por decisão judicial constitui receita nova, tributável por IRPJ e CSLL no lucro presumido e alcançada pelo regime cumulativo de PIS/Pasep e Cofins — inclusive a correção monetária e os juros. Quem tem trânsito em julgado dessa natureza precisa revisar o momento e a base de reconhecimento da receita antes do fechamento do trimestre.",
+  fn:"SC Cosit nº 179, de 22/09/2026 (base oficial de normas da RFB)",fu:"https://normasinternet2.receita.fazenda.gov.br/#/consulta/externa/153642/",lk:"ato"},
+
+ {d:"2026-09-21",nv:false,esf:"Federal",uf:"",ft:"Órgão fazendário",tema:"PIS/COFINS",imp:"Alto",of:true,rt:false,
+  prazo:"Habilitação até 04/10/2026",
+  t:"IN RFB nº 2.344/2026 abre a compensação de saldos credores de PIS/Cofins para produtores de etanol",
+  r:"Regulamenta o art. 5º da LC nº 235/2026: pessoas jurídicas produtoras de etanol podem compensar saldos credores de PIS/Pasep e Cofins com débitos próprios administrados pela Receita. O limite global é de R$ 750 milhões em 2026 e, se a demanda superar o teto, o rateio é proporcional à produção de etanol hidratado de 2025 de cada habilitado. Crédito não usado em 2026 pode ser compensado em 2027.",
+  fn:"IN RFB nº 2.344, de 18/09/2026 (DOU 21/09/2026); limite e rateio confirmados no art. 5º da LC 235/2026",fu:"https://normasinternet2.receita.fazenda.gov.br/#/consulta/externa/153636/",lk:"ato"},
+
+ {d:"2026-09-22",nv:false,esf:"Federal",uf:"",ft:"Judiciário/Administrativo",tema:"IRPJ/CSLL",imp:"Médio",of:true,rt:false,
+  t:"Solução de Consulta Cosit nº 175/2026: subvenção estadual de importação é receita tributável na comissária",
+  r:"Os benefícios do Prodepe-importação e do PEAP recebidos por comissárias e prestadoras de serviço de importação por conta e ordem são receitas definitivas e tributáveis por IRPJ, CSLL, PIS/Pasep e Cofins. Atinge trading companies e comissárias que tratavam a subvenção como não tributável.",
+  fn:"SC Cosit nº 175, de 22/09/2026 (base oficial de normas da RFB)",fu:"https://normasinternet2.receita.fazenda.gov.br/#/consulta/externa/153640/",lk:"ato"},
+
+ {d:"2026-09-22",nv:false,esf:"Federal",uf:"",ft:"Judiciário/Administrativo",tema:"Simples Nacional",imp:"Médio",of:true,rt:false,
+  t:"Solução de Consulta Cosit nº 178/2026 fixa a CPP de atividades concomitantes sem receita no mês",
+  r:"Trata da apuração da contribuição patronal previdenciária na empresa do Simples com atividades concomitantes dos Anexos I e IV quando não há receita bruta no mês, incluindo a proporcionalização do pró-labore do titular ou sócio. Resolve um ponto recorrente de folha em prestadoras com faturamento intermitente.",
+  fn:"SC Cosit nº 178, de 22/09/2026 (base oficial de normas da RFB)",fu:"https://normasinternet2.receita.fazenda.gov.br/#/consulta/externa/153641/",lk:"ato"},
+
+ {d:"2026-09-21",nv:false,esf:"Federal",uf:"",ft:"Órgão fazendário",tema:"IRPF",imp:"Baixo",of:true,rt:false,
+  prazo:"Consulta abre em 23/09/2026",
+  t:"Receita abre o lote residual de restituição do IRPF 2026",
+  r:"A consulta ao lote residual da restituição do IRPF 2026 abre em 23/09/2026. Interessa a quem caiu em malha, retificou a declaração ou ficou fora dos lotes regulares. Conferir a situação no e-CAC e, se a restituição não for creditada, verificar os dados bancários informados.",
+  fn:"Notícia RFB de 21/09/2026",fu:"https://www.gov.br/receitafederal/pt-br/assuntos/noticias/2026/setembro/receita-federal-abre-consulta-ao-lote-residual-de-restituicao-do-irpf-2026-nesta-quarta-feira-23",lk:"ato"},
+
+ {d:"2026-09-18",esf:"Federal",uf:"",ft:"Órgão fazendário",tema:"IRPJ/CSLL",imp:"Médio",of:true,rt:false,
+  t:"IN RFB nº 2.342/2026 mexe no Adicional da CSLL das multinacionais",
+  r:"Altera a IN RFB nº 2.228/2024, que trata do Adicional da CSLL alinhado às regras GloBE. Introduz o tratamento do RSGIF, permitindo que incentivos fiscais qualificados sejam computados como adição aos tributos abrangidos ajustados, e fixa o Limite de Substância em 5,5% do maior valor entre folha elegível e depreciação ou exaustão, com alternativa de 1% dos ativos tangíveis se eleita por cinco anos. Alcança grupos multinacionais sujeitos ao Pilar 2.",
+  fn:"IN RFB nº 2.342, de 18/09/2026 (DOU 18/09/2026, edição extra)",fu:"https://normasinternet2.receita.fazenda.gov.br/#/consulta/externa/153622/",lk:"ato"},
+
+ {d:"2026-09-15",esf:"Federal",uf:"",ft:"Judiciário/Administrativo",tema:"IRPF",imp:"Médio",of:true,rt:false,
+  t:"Solução de Consulta Cosit nº 174/2026 aperta a isenção de ganho de capital na venda de imóvel residencial",
+  r:"Os requisitos do art. 39 da Lei nº 11.196/2005 são simultâneos: o imóvel tem de ser residencial, o produto da venda precisa ser reinvestido em 180 dias e o contribuinte não pode ter usado o benefício nos cinco anos anteriores. A venda subsequente do imóvel recém-adquirido não é isenta se ocorrer dentro desses cinco anos. A SC também veda consulta formulada em conjunto por vários contribuintes sobre a mesma norma.",
+  fn:"SC Cosit nº 174, de 15/09/2026 (base oficial de normas da RFB)",fu:"https://normasinternet2.receita.fazenda.gov.br/#/consulta/externa/153489/",lk:"ato"},
+
+ {d:"2026-09-14",esf:"Estadual",uf:"Todas",ft:"Fonte secundária",tema:"Obrigação acessória",imp:"Alto",of:false,rt:false,
+  prazo:"05/10/2026 rejeições · 01/11/2026 o resto",
+  t:"Ajuste SINIEF nº 36/2026 reescreve a integração e as rejeições do CT-e",
+  r:"Aprovado na 202ª Reunião Ordinária do CONFAZ, de 04/09/2026: altera as especificações técnicas de integração dos emissores de CT-e com os portais das Sefaz, institui a versão online do Manual de Orientação do Contribuinte do CT-e e muda as regras de rejeição. As alterações de rejeição e as revogações valem de 05/10/2026; os demais dispositivos, de 01/11/2026. Transportadoras e software houses precisam programar a atualização.",
+  fn:"Ajuste SINIEF nº 36/2026 (DOU 14/09/2026) — fonte secundária, conferir no diário oficial",fu:"https://www.contabeis.com.br/noticias/79413/o-que-muda-no-ct-e-com-o-ajuste-sinief-no-36-2026",lk:"noticia"},
+
+ {d:"2026-09-18",esf:"Municipal",uf:"Nacional",ft:"Órgão fazendário",tema:"Obrigação acessória",imp:"Médio",of:true,rt:true,
+  prazo:"ME e EPP obrigadas ao Emissor Nacional em 01/11/2026",
+  t:"A adesão à NFS-e Nacional fechou em 100%: todos os 5.571 entes estão dentro",
+  r:"O painel oficial de monitoramento registra adesão dos 5.571 entes federados, inclusive os 184 municípios do Ceará — a planilha de aderentes é de 08/09/2026 e o monitoramento referencia arquivo de 18/09/2026. A pauta municipal deixa de ser aderir e passa a ser o cronograma de emissão: pela Resolução CGSN nº 191/2026, ME e EPP ficam obrigadas ao Emissor Nacional em 01/11/2026, e nota fora do padrão perde validade fiscal.",
+  fn:"Monitoramento de adesões da NFS-e Nacional, arquivo de 18/09/2026",fu:"https://www.gov.br/nfse/pt-br/municipios/monitoramento-adesoes",lk:"indice"},
+
+ {d:"2026-08-28",esf:"Estadual",uf:"CE",ft:"Fonte secundária",tema:"Transação",imp:"Alto",of:false,rt:false,
+  prazo:"Vigente desde 28/08/2026",
+  t:"IN SEFAZ-CE nº 002/2026 veda desconto na transação de dívida inscrita há menos de um ano",
+  r:"Altera a IN nº 5, de 16/08/2024, que instituiu o Regulariza Ceará (Lei estadual nº 18.706/2024). Revisa os critérios de aferição do grau de recuperabilidade nos arts. 24, 25 e 27 e proíbe desconto na transação de créditos inscritos em dívida ativa há menos de um ano, contado da apresentação da proposta pelo devedor ou pela PGE. Muda o momento de propor transação no Ceará: para inscrição recente, a janela de desconto só abre depois de um ano.",
+  fn:"IN SEFAZ-CE nº 002, de 24/08/2026 (DOE 28/08/2026) — fonte secundária, conferir no DOE-CE",fu:"https://taxesbrasil.com.br/boletins-diarios/instrucao-normativa-n-002-de-24-de-agosto-de-2026/",lk:"ato"},
+
+ {d:"2026-09-03",esf:"Municipal",uf:"Nacional",ft:"Documentação técnica",tema:"ISS",imp:"Médio",of:true,rt:true,
+  t:"Portal Nacional da NFS-e publica a base de alíquotas de ISSQN dos 5.571 municípios",
+  r:"Planilhas por UF com alíquota de ISSQN por município e por código de serviço, com incidência e datas de início e fim de vigência. É a primeira fonte única para conferir a alíquota de qualquer município sem abrir o código tributário local — inclusive os 184 do Ceará. Colunas: codigo_ibge, uf, nome_municipio, codigo_servico, incidencia, aliquota, dt_ini, dt_fim.",
+  fn:"Portal da NFS-e, biblioteca de alíquotas, publicada em 03/09/2026",fu:"https://www.gov.br/nfse/pt-br/biblioteca/perguntas-e-respostas/aliquotas",lk:"ato"},
+
+ {d:"2026-09-02",esf:"Federal",uf:"",ft:"Legislativo",tema:"ITCMD",imp:"Baixo",of:true,rt:false,
+  t:"PLP 247/2026 quer isenção condicionada de ITCMD na sucessão de empresas familiares",
+  r:"Apresentado no Senado por Esperidião Amin, estabelece diretrizes para isenção condicionada do ITCMD na transmissão de participações societárias em empresas familiares produtivas. Em tramitação, sem eficácia; interessa a planejamento sucessório e holdings familiares.",
+  fn:"PLP 247/2026, apresentado em 02/09/2026 — fonte: base de processos do Senado",fu:"https://www25.senado.leg.br/web/atividade/materias/-/materia/175719",lk:"ato"},
+
+ {d:"2026-08-27",esf:"Federal",uf:"",ft:"Diário Oficial",tema:"Benefícios fiscais",imp:"Médio",of:true,rt:false,
+  prazo:"Crédito fiscal de fertilizantes até 31/12/2031",
+  t:"LC nº 235/2026 é a matriz das reduções de tributo sobre combustíveis",
+  r:"Autoriza renúncias de receita em 2026 para mitigar o impacto do conflito no Oriente Médio e permite reduzir alíquotas federais sobre diesel, biodiesel, gasolina, etanol e querosene — corte de 30% ou mais na gasolina obriga zerar a alíquota do etanol. É a lei que sustenta os Decretos nº 13.116 e 13.119/2026. Também suspende restrições orçamentárias para os benefícios de minerais críticos e fertilizantes e autoriza crédito fiscal de até R$ 1 bilhão por ano entre 2027 e 2031.",
+  fn:"Lei Complementar nº 235, de 27/08/2026",fu:"https://www.planalto.gov.br/ccivil_03/leis/lcp/lcp235.htm",lk:"ato"},
+
+ {d:"2026-09-18",esf:"Federal",uf:"",ft:"Fonte secundária",tema:"Transação",imp:"Alto",of:false,rt:false,
+  prazo:"Adesão até 29/12/2026, às 19h",
+  t:"Edital PGFN/RFB nº 5/2026 abre transação sobre as multas substitutivas do perdimento",
+  r:"Transação de contencioso de relevante e disseminada controvérsia sobre a aplicabilidade e os limites das multas substitutivas da pena de perdimento (Decreto-Lei nº 1.455/1976 e Lei nº 11.488/2007), inclusive nos casos de interposição fraudulenta na importação. Descontos de 25% a 65% e parcelamento em até 61 meses, para débitos em discussão administrativa ou judicial.",
+  fn:"Edital de Transação PGFN/RFB nº 5/2026 (DOU 18/09/2026) — fonte secundária, conferir no diário oficial",fu:"https://www.trenchrossi.com/alertas-legais/brasil-pgfn-e-rfb-abrem-edital-de-transacao-para-discussoes-sobre-multas-substitutivas-da-pena-de-perdimento/",lk:"noticia"},
+
+ {d:"2026-09-16",esf:"Federal",uf:"",ft:"Diário Oficial",tema:"Benefícios fiscais",imp:"Baixo",of:true,rt:false,
+  t:"Lei nº 15.506/2026 cria crédito fiscal e isenções para minerais críticos",
+  r:"Institui a Política Nacional de Minerais Críticos e Estratégicos. Em matéria tributária: isenta de IRPJ e CSLL as receitas dos fundos constituídos (art. 14), cria crédito fiscal de até 20% das despesas de beneficiamento, devolvido como crédito de CSLL e limitado a R$ 5 bilhões entre 2030 e 2034 (arts. 17 a 22), e amplia o REIDI ao beneficiamento e à mineração urbana desses minerais.",
+  fn:"Lei nº 15.506, de 16/09/2026",fu:"https://www.planalto.gov.br/ccivil_03/_ato2023-2026/2026/lei/l15506.htm",lk:"ato"},
+
+ {d:"2026-09-16",esf:"Estadual",uf:"Todas",ft:"Fonte secundária",tema:"ICMS",imp:"Baixo",of:false,rt:false,
+  t:"Atos COTEPE/ICMS nº 99 e 100/2026 atualizam listas de credenciados",
+  r:"O Ato 99 altera a relação de contribuintes credenciados à isenção e à redução de base de cálculo do ICMS nas atividades de petróleo e gás natural; o Ato 100 altera a lista de empresas nacionais beneficiárias da redução de base de cálculo em operações com materiais aeronáuticos. Efeito restrito às empresas listadas.",
+  fn:"Atos COTEPE/ICMS nº 99 e 100/2026 (DOU 16/09/2026) — fonte secundária, conferir no diário oficial",fu:"https://www.confaz.fazenda.gov.br/legislacao/atos",lk:"indice"},
+
+ {d:"2026-09-15",esf:"Estadual",uf:"CE",ft:"Fonte secundária",tema:"ICMS",imp:"Alto",of:false,rt:false,
+  prazo:"Efeitos a partir de 01/10/2026",
+  t:"Protocolo ICMS nº 94/2026 encerra a substituição tributária de autopeças entre São Paulo e Ceará",
+  r:"O Despacho CONFAZ nº 43/2026 publicou 23 protocolos que marcam a saída de São Paulo de acordos de substituição tributária; o de nº 94 revoga o Protocolo ICMS nº 22/2008, firmado entre São Paulo e Ceará para peças, componentes e acessórios de autopropulsados. A partir de 01/10/2026 o remetente paulista deixa de reter o ICMS-ST, e a responsabilidade se desloca para o adquirente cearense pela regra interna. Revisar cadastros, preços de compra e rotina de antecipação.",
+  fn:"Despacho CONFAZ nº 43, de 14/09/2026 (DOU 15/09/2026), Protocolo ICMS nº 94/2026 — fonte secundária, conferir no diário oficial",fu:"https://www.reformatributaria.com/reforma-tributaria-brasil/confaz-publica-34-protocolos-icms-substituicao-tributaria-combustiveis-e-integracao-de-cadeias-tem-mudancas",lk:"noticia"},
+
+ {d:"2026-09-15",esf:"Estadual",uf:"Todas",ft:"Fonte secundária",tema:"ICMS",imp:"Médio",of:false,rt:false,
+  prazo:"Maioria em vigor a partir de 01/10/2026",
+  t:"Bloco de 34 protocolos de ICMS-ST redesenha acordos entre estados",
+  r:"Os Protocolos ICMS nº 90 a 123/2026 alteram ou revogam acordos de substituição tributária em materiais elétricos, autopeças, ferramentas, bicicletas, eletrodomésticos, eletroeletrônicos, informática, cosméticos, sorvetes, bebidas, venda porta a porta, combustíveis, aves, suínos e rações. Os de nº 90, 91, 122 e 123 valem desde 15/09; os de nº 92 a 121 a partir de 01/10/2026; o 119 retroage a 01/07 e o 120 vale de 01/11/2026.",
+  fn:"Protocolos ICMS nº 90 a 123/2026 (DOU 15/09/2026) — fonte secundária, conferir no diário oficial",fu:"https://www.contabeis.com.br/noticias/79437/confaz-publica-34-protocolos-com-mudancas-no-icms-st-veja-o-que-muda/",lk:"noticia"},
+
+ {d:"2026-09-15",esf:"Federal",uf:"",ft:"Diário Oficial",tema:"Benefícios fiscais",imp:"Médio",of:true,rt:false,
+  prazo:"PIS/Cofins e IPI cessam em 31/12/2026",
+  t:"Lei nº 15.504/2026 institui o REDATA, regime especial dos datacenters",
+  r:"Suspende, convertendo em alíquota zero ao cumprimento dos requisitos, o II, o IPI, o PIS/Pasep e a Cofins, inclusive na importação, para projetos de instalação, modernização ou ampliação de datacenters. Exige reserva de 10% da capacidade ao mercado interno, energia de fonte renovável ou de baixa emissão, eficiência hídrica e 2% do valor dos equipamentos em P&D. Só o Imposto de Importação alcança os cinco anos; os demais cessam em 31/12/2026 pela transição da Reforma. Equipamentos elegíveis e critérios de habilitação dependem de regulamento.",
+  fn:"Lei nº 15.504, de 15/09/2026",fu:"https://www.planalto.gov.br/ccivil_03/_ato2023-2026/2026/lei/l15504.htm",lk:"ato"},
+
+ {d:"2026-09-15",esf:"Federal+Municipal",uf:"Nacional",ft:"Diário Oficial",tema:"Benefícios fiscais",imp:"Médio",of:true,rt:false,
+  t:"LC nº 237/2026 desobriga municípios de até 65 mil habitantes de comprovar regularidade para transferências voluntárias",
+  r:"Altera a LC nº 229/2026 e a LC nº 101/2000. Além de enquadrar o regime dos datacenters e a desoneração de IRPJ e CSLL das resseguradoras locais nas exceções às restrições de concessão de benefícios, dispensa os municípios com até 65 mil habitantes de comprovar o pagamento de tributos e a prestação de contas para receber transferências voluntárias. Alcança a quase totalidade dos municípios cearenses.",
+  fn:"Lei Complementar nº 237, de 15/09/2026",fu:"https://www.planalto.gov.br/ccivil_03/leis/lcp/lcp237.htm",lk:"ato"},
+
+ {d:"2026-09-18",esf:"Federal",uf:"Nacional",ft:"Órgão fazendário",tema:"Reforma Tributária",imp:"Alto",of:true,rt:true,
+  prazo:"Opção de 01/09 a 31/10/2026",
+  t:"Orientação conjunta RFB/CGIBS abre a opção das cooperativas pelo regime específico de IBS e CBS",
+  r:"Sociedades cooperativas enquadradas no art. 271 da LC 214/2025 podem optar pelo regime específico de IBS e CBS com efeitos a partir de 01/01/2027. A opção exige duas etapas: registro no Portal Tributação sobre Consumo e envio da listagem de associados com identificação e data de admissão.",
+  fn:"Orientação Conjunta RFB/CGIBS de 18/09/2026",fu:"https://www.gov.br/receitafederal/pt-br/assuntos/noticias/2026/setembro/orientacao-conjunta-rfb-cgibs",lk:"ato"},
+
+ {d:"2026-09-18",esf:"Federal",uf:"",ft:"Fonte secundária",tema:"IRPJ/CSLL",imp:"Alto",of:false,rt:false,
+  t:"IN RFB nº 2.343/2026 restringe a presunção de 8% nos serviços hospitalares",
+  r:"Altera a IN RFB nº 1.700/2017: inclui expressamente a anestesiologia, afasta o percentual reduzido para sociedade simples e empresário individual e veda os 8% em consultas médicas simples feitas dentro de hospital e em arranjos de mera cessão de mão de obra. Atinge clínicas e prestadores hospitalares no lucro presumido.",
+  fn:"IN RFB nº 2.343, de 17/09/2026 (DOU 18/09/2026) — fonte secundária, conferir no diário oficial",fu:"https://mgcontecnica.com.br/2026/09/18/receita-federal-atualiza-as-regras-sobre-a-reducao-do-percentual-de-presuncao-nos-servicos-hospitalares/",lk:"noticia"},
+
+ {d:"2026-09-16",esf:"Federal",uf:"Nacional",ft:"Órgão fazendário",tema:"Obrigação acessória",imp:"Baixo",of:true,rt:true,
+  t:"CGNFS-e publica o Perguntas e Respostas da NFS-e Nacional",
+  r:"Material oficial com 30 temas e mais de 170 perguntas sobre Painel Municipal, parametrização da plataforma, procedimentos cadastrais e correção de erros de endereço. Serve às secretarias de finanças municipais em fase de parametrização.",
+  fn:"Notícia CGNFS-e de 16/09/2026",fu:"https://www.gov.br/nfse/pt-br/noticias/publicado-o-perguntas-e-respostas-da-nfs-e",lk:"ato"},
+
+ {d:"2026-09-16",esf:"Federal",uf:"",ft:"Fonte secundária",tema:"PIS/COFINS",imp:"Médio",of:false,rt:false,
+  t:"Solução de Consulta afasta a não incidência de PIS/Cofins no back-to-back",
+  r:"A operação back-to-back não é exportação para fins de não incidência de PIS/Pasep e Cofins, e a base de cálculo é o valor total da invoice emitida ao comprador estrangeiro, não a margem. Atinge empresas que compram e revendem mercadoria estrangeira sem ingresso em território nacional.",
+  fn:"SC DISIT/SRRF01 nº 1.005, de 30/01/2026 (DOU 16/09/2026) — fonte secundária, conferir no diário oficial",fu:"https://www.nra.adv.br/operacao-back-to-back/",lk:"noticia"},
+
+ {d:"2026-09-14",esf:"Estadual",uf:"Todas",ft:"Fonte secundária",tema:"Obrigação acessória",imp:"Alto",of:false,rt:false,
+  prazo:"Regra geral em vigor a partir de 01/11/2026",
+  t:"Despacho CONFAZ nº 42/2026 publica os Ajustes SINIEF 28 a 40/2026",
+  r:"Bloco de 13 ajustes da 202ª Reunião Ordinária que mexe em NF-e, NFC-e, CT-e, CT-e OS, MDF-e, BP-e, GTV-e, NF3e, NFCom e DC-e, além de condomínio de armazém rural. Regra geral vigora em 01/11/2026, com exceções: os Ajustes 29 e 34 desde 14/09, o 36 em 05/10, o 37 retroativo a 01/09 e o 39 retroativo a 01/08/2026.",
+  fn:"Despacho CONFAZ nº 42/2026 (DOU 14/09/2026) — fonte secundária, conferir no diário oficial",fu:"https://www.reformatributaria.com/documentos-fiscais/novos-ajustes-sinief-veja-quando-produzem-efeitos-as-regras-de-documentos-fiscais",lk:"noticia"},
+
+ {d:"2026-09-14",esf:"Estadual",uf:"Todas",ft:"Fonte secundária",tema:"Obrigação acessória",imp:"Médio",of:false,rt:false,
+  prazo:"Vigência em 01/11/2026",
+  t:"Ajuste SINIEF nº 40/2026 muda o Manual de Orientação do Contribuinte da NF-e",
+  r:"O MOC passa a definir as especificações técnicas de integração entre o portal da SEFAZ e os sistemas das empresas. Acre, Bahia e São Paulo deixam de exigir o Pedido de Inutilização de Número e Minas Gerais fica dispensada de certos procedimentos. Exige revisão de rotina de emissão nesses estados.",
+  fn:"Ajuste SINIEF nº 40/2026 (DOU 14/09/2026) — fonte secundária, conferir no diário oficial",fu:"https://www.contabeis.com.br/noticias/79441/nf-e-novas-regras-entram-em-vigor-apos-publicacao-de-ajuste-sinief/",lk:"noticia"},
+
+ {d:"2026-09-14",esf:"Federal",uf:"",ft:"Judiciário/Administrativo",tema:"Compensação",imp:"Alto",of:false,rt:false,
+  t:"STF valida o limite mensal de compensação de créditos judiciais (ADI 7.587)",
+  r:"O Supremo declarou constitucional o teto mensal de compensação da Lei nº 14.873/2024 para créditos reconhecidos judicialmente acima de R$ 10 milhões, sem modulação. Empresas com trânsito em julgado nessa faixa ficam limitadas a fração mensal, chegando a 1/60 nas faixas maiores. Relator o ministro Cristiano Zanin, julgada em conjunto com a ADI 7.609, sem divergência. Data confirmada em 21/09: a sessão virtual encerrou em 14/09 às 23h59 — a versão de 17/09 que circulou não se sustenta em nenhuma fonte.",
+  fn:"ADI 7.587 e ADI 7.609, sessão virtual encerrada em 14/09/2026 — data confirmada; ata e acórdão ainda não localizados",fu:"https://www.contabeis.com.br/noticias/79417/stf-valida-limite-para-compensacao-de-creditos-tributarios",lk:"noticia"},
+
+ {d:"2026-09-14",esf:"Federal",uf:"",ft:"Judiciário/Administrativo",tema:"PIS/COFINS",imp:"Alto",of:false,rt:false,
+  t:"STJ fixa o Tema 1.276: a CPRB integra a base do PIS e da Cofins",
+  r:"A 1ª Seção decidiu por unanimidade, contra o contribuinte, que a contribuição previdenciária substitutiva compõe a receita bruta para PIS e Cofins. Modulação rejeitada, aplicação imediata. Atinge setores sujeitos à CPRB — transporte, construção, TI — e destrava os processos sobrestados.",
+  fn:"REsp 2.123.904/SP, julgado em 09/09/2026, acórdão publicado em 14/09/2026 — fonte secundária",fu:"https://rotadajurisprudencia.com.br/2026/09/stj-fixa-tema-1-276-e-mantem-cprb-na-base-do-pis-cofins/",lk:"noticia"},
+
+ {d:"2026-09-14",esf:"Federal",uf:"",ft:"Judiciário/Administrativo",tema:"Processo fiscal",imp:"Médio",of:false,rt:false,
+  prazo:"Ata não publicada até 21/09 — enunciados ainda sem efeito",
+  t:"CARF aprova oito novos enunciados de súmula",
+  r:"Dois do Pleno, um da 1ª CSRF, um da 2ª CSRF e quatro da 3ª CSRF: índices de inflação expurgados na atualização de indébitos; limite de alçada apurado só sobre principal e multa originais; estimativas de IRPJ/CSLL em parcelamento compondo saldo negativo; natureza da contribuição ao Senar; dever de verificação do adquirente para crédito de IPI; coque de petróleo usado como combustível não gera crédito de IPI; transferência de créditos entre pessoas jurídicas como mútuo sujeito a IOF; e Cide-Remessas sobre royalties desde 2002. Reconferido em 22/09: a ata não foi localizada no DOU, os números seguem sem confirmação e não há portaria nova do Ministério da Fazenda — a última é a Portaria MF nº 1.785, de 19/06/2026, que deu efeito vinculante às Súmulas 188 a 238 e não alcança estes oito. A série pública oficial ainda para na Súmula 245, de 27/11/2025.",
+  fn:"Sessão do CARF de 14/09/2026 — fonte secundária; ata não publicada no DOU até 21/09/2026",fu:"https://www.oam.adv.br/2026/09/carf-aprova-oito-novos-enunciados-de-sumulas-em-sessao-realizada-nesta-segunda-feira-14-9/",lk:"noticia"},
+
+ {d:"2026-09-14",esf:"Estadual",uf:"CE",ft:"Fonte secundária",tema:"ICMS",imp:"Médio",of:false,rt:false,
+  t:"IN SEFAZ-CE nº 88/2026 atualiza a pauta de ICMS-ST de sorvetes e picolés",
+  r:"Altera o Anexo Único da IN nº 72, de 06/07/2026, com novos valores de base de cálculo do ICMS-ST. Atinge fabricantes, importadores e distribuidores substitutos do setor, que precisam reconfigurar a pauta no cadastro fiscal. Data de assinatura não confirmada.",
+  fn:"IN SEFAZ-CE nº 88/2026 (DOE 14/09/2026 pelo ITCNET; 15/09 pelo Econet) — fonte secundária, conferir no DOE-CE",fu:"https://taxesbrasil.com.br/boletins-diarios/instrucao-normativa-n-088-de-04-de-setembro-de-2026/",lk:"ato"},
+
+ {d:"2026-09-11",esf:"Estadual",uf:"CE",ft:"Diário Oficial",tema:"Parcelamento",imp:"Alto",of:true,rt:false,
+  prazo:"CDL entrega a lista de participantes até 21/09/2026",
+  t:"Decreto CE nº 37.542/2026 parcela o ICMS de setembro do varejo na Grande Fortaleza",
+  r:"Concede aos optantes da campanha Fortaleza Líquida 2026 o parcelamento do ICMS de setembro em três parcelas iguais, com vencimento em 21/10, 20/11 e 22/12/2026. Alcança o comércio varejista inscrito no CGF na Região Metropolitana de Fortaleza; ficam de fora optantes do Simples Nacional, contribuintes sob substituição tributária e 41 CNAEs listados.",
+  fn:"Decreto nº 37.542, de 09/09/2026 (DOE-CE de 11/09/2026)",fu:"https://imagens.seplag.ce.gov.br/PDF/20260911/do20260911p01.pdf",lk:"ato"},
+
+ {d:"2026-09-05",esf:"Estadual+Municipal",uf:"Nacional",ft:"Órgão fazendário",tema:"Reforma Tributária",imp:"Médio",of:true,rt:true,
+  t:"NFS-e Nacional conclui homologação das funcionalidades de IBS e CBS",
+  r:"Testes integrados de validação dos requisitos de adequação da NFS-e ao IBS e à CBS, em cumprimento ao Ato Conjunto RFB/CGIBS nº 4/2026 e às etapas da NT SE/CGNFS-e nº 009/2026. Municípios conveniados e desenvolvedores devem acompanhar o cronograma e parametrizar seus ambientes; datas de implantação em produção não foram divulgadas.",
+  fn:"Notícia CGNFS-e de 05/09/2026",fu:"https://www.gov.br/nfse/pt-br/noticias/secretaria-executiva-do-cgnfs-e-participa-de-homologacao-de-novas-funcionalidades-da-nota-fiscal-de-servico-eletronica-para-a-reforma-tributaria",lk:"ato"},
+
+ {d:"2026-09-03",esf:"Estadual",uf:"CE",ft:"Fonte secundária",tema:"ICMS",imp:"Médio",of:false,rt:false,
+  prazo:"Vigência mensal — setembro/2026",
+  t:"IN SEFAZ-CE nº 87/2026 fixa a redução da base de cálculo do ICMS no GNV",
+  r:"Divulga o percentual de redução da base de cálculo do ICMS nas operações internas com gás natural veicular, inclusive sob substituição tributária, referente a setembro de 2026. Atinge distribuidoras e postos revendedores; o percentual é renovado mês a mês. Data de assinatura não confirmada.",
+  fn:"IN SEFAZ-CE nº 87/2026 (DOE 03/09/2026) — fonte secundária, conferir no DOE-CE",fu:"https://taxesbrasil.com.br/boletins-diarios/instrucao-normativa-n-087-de-28-de-agosto-de-2026/",lk:"ato"},
+
+ {d:"2026-08-28",esf:"Estadual",uf:"CE",ft:"Fonte secundária",tema:"ICMS",imp:"Médio",of:false,rt:false,
+  t:"INs SEFAZ-CE nº 85 e 86/2026 atualizam pautas de ICMS-ST de bebidas",
+  r:"A IN 85 altera o anexo único da IN nº 31/2022 (água mineral e gelo) e a IN 86 altera o anexo único da IN nº 01/2026 (energéticos e isotônicos), com novos valores de venda a consumidor final para cobrança do ICMS-ST. Substitutos e substituídos precisam atualizar a pauta. Datas de assinatura não confirmadas.",
+  fn:"INs SEFAZ-CE nº 85 e 86/2026 (DOE 28/08/2026) — fonte secundária, conferir no DOE-CE",fu:"https://taxesbrasil.com.br/boletins-diarios/instrucao-normativa-n-085-de-25-de-agosto-de-2026/",lk:"ato"},
+
+ {d:"2026-08-25",esf:"Estadual",uf:"CE",ft:"Fonte secundária",tema:"ICMS",imp:"Baixo",of:false,rt:false,
+  prazo:"Cotas válidas para setembro/2026",
+  t:"INs SEFAZ-CE nº 82 a 84/2026 divulgam as cotas de diesel com benefício fiscal",
+  r:"Tabelas de quantidade de óleo diesel consumível em setembro de 2026 com o benefício dos Convênios ICMS 79/2019 e 21/2023: IN 82 para ônibus do transporte coletivo urbano de Fortaleza, IN 83 para cooperativas de transporte autônomo de passageiros e IN 84 para o transporte rodoviário intermunicipal. Datas confirmadas em 21/09 no texto integral das INs 83 e 84: assinatura em 19/08, publicação em 25/08. O Econet atribui competência de junho à IN 82 — é erro de catalogação: as três são gêmeas e as duas legíveis dizem setembro.",
+  fn:"INs SEFAZ-CE nº 82 a 84, de 19/08/2026 (DOE 25/08/2026) — datas confirmadas",fu:"https://taxesbrasil.com.br/boletins-diarios/instrucao-normativa-n-083-de-19-de-agosto-de-2026/",lk:"ato"},
+
+ {d:"2026-06-19",esf:"Estadual",uf:"CE",ft:"Fonte secundária",tema:"Obrigação acessória",imp:"Alto",of:false,rt:false,
+  prazo:"Grupo 3 tem até 03/11/2026",
+  t:"IN SEFAZ-CE nº 66/2026 adia para novembro a vinculação dos meios de pagamento à NF-e",
+  r:"Prorroga para 03/11/2026 o prazo de vinculação dos meios de pagamento eletrônicos à emissão de NF-e e NFC-e para as empresas do Grupo 3, que deveriam ter cumprido até 01/07/2026. Altera a IN nº 87/2025. É a providência estadual pendente mais próxima no Ceará.",
+  fn:"IN SEFAZ-CE nº 66, de 19/06/2026 — fonte secundária, conferir no DOE-CE",fu:"https://taxesbrasil.com.br/boletins-diarios/instrucao-normativa-n-066-de-19-de-junho-de-2026/",lk:"ato"},
+ {d:"2026-09-04",esf:"Federal",uf:"",ft:"Órgão fazendário",tema:"Benefícios fiscais",imp:"Alto",of:true,rt:false,
+  prazo:"Período de adaptação até 31/12/2026",
+  t:"IN RFB nº 2.341/2026 aperta o acompanhamento de benefícios fiscais",
+  r:"Altera a IN RFB nº 2.332 e entrou em vigor em 01/09/2026. Até o fim de 2026 a empresa é avisada em caráter orientativo para sanear irregularidades antes da intimação; a regra de transição não alcança devedor contumaz.",
+  fn:"IN RFB nº 2.341, de 31/08/2026",fu:"https://www.gov.br/receitafederal/pt-br/assuntos/noticias/2026/setembro/receita-federal-aperfeicoa-regras-de-acompanhamento-da-fruicao-de-beneficios-fiscais",lk:"ato"},
+
+ {d:"2026-09-04",esf:"Federal",uf:"",ft:"Órgão fazendário",tema:"Transação",imp:"Médio",of:true,rt:false,
+  prazo:"Adesão até 29/12/2026",
+  t:"Edital PGFN/RFB nº 4/2026 abre transação para IRRF de investidores não residentes",
+  r:"Permite regularizar débitos de IRRF de investidores não residentes com descontos de até 65%. Alcança quem tem a controvérsia específica tratada no edital.",
+  fn:"Edital PGFN/RFB nº 4/2026, de 04/09/2026",fu:"https://www.gov.br/receitafederal/pt-br/assuntos/noticias/2026/setembro/receita-federal-e-pgfn-publicam-novo-edital-de-transacao-para-controversia-sobre-irrf-de-investidores-nao-residentes",lk:"ato"},
+
+ {d:"2026-09-04",esf:"Federal",uf:"",ft:"Órgão fazendário",tema:"Aduaneiro",imp:"Baixo",of:true,rt:false,
+  prazo:"Contribuições até 23/09/2026",
+  t:"Consulta pública sobre regimes aduaneiros especiais de depósito",
+  r:"A Receita abriu consulta para consolidar e modernizar as normas dos regimes aduaneiros especiais de depósito de mercadorias. Interessa a quem opera entreposto, depósito afiançado ou recinto alfandegado.",
+  fn:"Consulta pública RFB, 04 a 23/09/2026",fu:"https://www.gov.br/receitafederal/pt-br/assuntos/noticias/2026/setembro/rfb-abre-consulta-publica-para-receber-contribuicoes-sobre-consolidacao-e-modernizacao-de-normas-relativas-aos-regimes-aduaneiros-de-mercadorias",lk:"ato"},
+ {d:"2026-09-16",esf:"Federal",uf:"",ft:"Legislativo",tema:"Combustíveis",imp:"Médio",of:true,rt:false,
+  t:"Decreto nº 13.119/2026 regulamenta subvenção a biocombustíveis",
+  r:"Dispõe sobre a subvenção econômica a produtores e cooperativas de biocombustíveis destinados ao consumo final, com base no art. 2º, §5º e §6º da LC nº 235/2026. Vigora desde a publicação.",
+  fn:"Decreto nº 13.119, de 16/09/2026",fu:"https://www.planalto.gov.br/ccivil_03/_ato2023-2026/2026/decreto/D13119.htm",lk:"ato"},
+
+ {d:"2026-09-15",esf:"Estadual+Municipal",uf:"Nacional",ft:"Órgão fazendário",tema:"Reforma Tributária",imp:"Baixo",of:true,rt:true,
+  t:"Resolução CGIBS nº 18 amplia a força de trabalho do Comitê Gestor",
+  r:"Autoriza designação temporária de servidores estaduais, distritais e municipais para desenvolver sistemas, plataformas digitais e atos normativos do IBS. Não cria obrigação para o contribuinte, mas sinaliza aceleração da produção normativa do Comitê.",
+  fn:"Resolução CGIBS nº 18, de 15/09/2026",fu:"https://www.cgibs.gov.br/upload/arquivos/202609/15150334-resolucao-cgibs-ampliacao-da-forca-de-trabalho.pdf",lk:"ato"},
+
+ {d:"2026-09-15",esf:"Federal",uf:"",ft:"Órgão fazendário",tema:"PIS/COFINS",imp:"Alto",of:true,rt:false,
+  prazo:"Corrigir sem multa até 10/11/2026",
+  t:"Receita abre autorregularização de créditos indevidos de PIS/Pasep e Cofins",
+  r:"O programa mira apropriação indevida de créditos sobre insumos na revenda e sobre serviços de transporte de carga, com R$ 1,3 bilhão em inconsistências. Contribuintes com divergência na EFD-Contribuições estão sendo notificados por Correios, e-CAC e e-Mac.",
+  fn:"Notícia RFB de 15/09/2026",fu:"https://www.gov.br/receitafederal/pt-br/assuntos/noticias/2026/setembro/receita-federal-indica-oportunidade-de-regularizacao-de-creditos-de-pis-pasep-e-cofins",lk:"ato"},
+
+ {d:"2026-09-14",esf:"Federal",uf:"",ft:"Documentação técnica",tema:"Reforma Tributária",imp:"Alto",of:true,rt:true,
+  prazo:"Out/2026 débitos e créditos · Nov/2026 pagamentos e DARF",
+  t:"Nova documentação técnica das APIs de apuração da CBS",
+  r:"A Receita publicou a documentação das APIs gratuitas de apuração da CBS, agora com consulta incremental — só o que mudou desde a última chamada, reduzindo tempo de processamento e volume trafegado. Atinge escritórios, software houses e contribuintes de alto volume.",
+  fn:"Notícia RFB de 14/09/2026",fu:"https://www.gov.br/receitafederal/pt-br/assuntos/noticias/2026/setembro/receita-federal-publica-nova-documentacao-tecnica-das-apis-de-apuracao-de-cbs",lk:"ato"},
+
+ {d:"2026-09-11",esf:"Federal",uf:"",ft:"Legislativo",tema:"Reforma Tributária",imp:"Baixo",of:true,rt:true,
+  t:"PLP 256/2026 quer molho de tomate na redução de 60% de IBS e CBS",
+  r:"Propõe incluir o molho de tomate no rol de alimentos com redução de 60% das alíquotas de IBS e CBS. Em tramitação, sem eficácia; afeta indústria e varejo de alimentos se aprovado.",
+  fn:"PLP 256/2026, apresentado em 11/09/2026",fu:"https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2646371",lk:"ato"},
+
+ {d:"2026-09-10",esf:"Federal",uf:"",ft:"Legislativo",tema:"Reforma Tributária",imp:"Médio",of:true,rt:true,
+  t:"PLP 251/2026 propõe alíquota zero de CBS para vendas de baixo valor",
+  r:"Estabelece alíquota zero de CBS para vendas de baixo valor no mercado interno, para equalizar o tratamento com as remessas internacionais. Alcança e-commerce e pequenos vendedores; sem eficácia até aprovação e sanção.",
+  fn:"PLP 251/2026, apresentado em 10/09/2026",fu:"https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2646323",lk:"ato"},
+
+ {d:"2026-09-10",esf:"Federal",uf:"",ft:"Legislativo",tema:"Reforma Tributária",imp:"Médio",of:true,rt:true,
+  t:"PLP 253/2026 altera a LC 214/2025 no tratamento do setor de saúde",
+  r:"Mexe no tratamento de IBS e CBS do setor de saúde, sob o argumento de proteção ao direito fundamental à Saúde. Relevante para prestadores e planos; em tramitação.",
+  fn:"PLP 253/2026, apresentado em 10/09/2026",fu:"https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2646354",lk:"ato"},
+
+ {d:"2026-09-10",esf:"Federal",uf:"",ft:"Legislativo",tema:"Reforma Tributária",imp:"Baixo",of:true,rt:true,
+  t:"PLP 252/2026 propõe redução de 60% para alimentos de cães e gatos",
+  r:"Propõe redução de 60% das alíquotas de IBS e CBS para rações e alimentos de cães e gatos. Afeta indústria pet e varejo; em tramitação.",
+  fn:"PLP 252/2026, apresentado em 10/09/2026",fu:"https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2646347",lk:"ato"},
+
+ {d:"2026-09-09",esf:"Federal",uf:"",ft:"Diário Oficial",tema:"PIS/COFINS",imp:"Alto",of:true,rt:false,
+  prazo:"Vigência de 09/09 a 09/10/2026",
+  t:"Decreto nº 13.116/2026 corta PIS/Cofins sobre gasolina e zera sobre etanol",
+  r:"Reduz as alíquotas de PIS/Pasep e Cofins sobre importação e comercialização interna de gasolina e suas correntes, exceto gasolina de aviação, e zera as contribuições sobre etanol hidratado. São R$ 0,63 por litro a menos na gasolina e R$ 0,19 no etanol.",
+  fn:"Decreto nº 13.116, de 09/09/2026",fu:"https://www.planalto.gov.br/ccivil_03/_ato2023-2026/2026/decreto/D13116.htm",lk:"ato"},
+
+ {d:"2026-09-09",esf:"Estadual",uf:"Todas",ft:"Fonte secundária",tema:"ICMS",imp:"Alto",of:false,rt:false,
+  t:"Despacho CONFAZ nº 40/2026 publica os Convênios ICMS 93 a 108/2026",
+  r:"Bloco de 16 convênios da 202ª Reunião Ordinária, com destaque para isenção nas saídas de fármacos e medicamentos (Conv. 100), isenção em operações interestaduais com vans e ônibus (Conv. 101) e crédito presumido para hospitais filantrópicos (Conv. 105). Os efeitos dependem de internalização por cada UF, inclusive pelo Ceará.",
+  fn:"Despacho CONFAZ nº 40/2026, DOU de 09/09/2026",fu:"https://www.confaz.fazenda.gov.br/legislacao/convenios/2026",lk:"indice"},
+
+ {d:"2026-09-09",esf:"Estadual",uf:"Todas",ft:"Fonte secundária",tema:"ICMS",imp:"Alto",of:false,rt:false,
+  t:"Convênios ICMS 107 e 108/2026 mexem na substituição tributária",
+  r:"O Convênio 107 altera o Anexo XX do Convênio ICMS 142/2018, que lista as mercadorias sujeitas a ST; o 108 altera o Convênio 110/2007, de combustíveis e lubrificantes. Mexe no cálculo e na responsabilidade de substitutos e substituídos, exigindo reconfiguração de cadastros fiscais.",
+  fn:"Convênios ICMS nº 107 e 108, de 04/09/2026 (DOU 09/09/2026)",fu:"https://www.confaz.fazenda.gov.br/legislacao/convenios/2026",lk:"indice"},
+
+ {d:"2026-09-09",esf:"Estadual",uf:"AL/AP/DF",ft:"Fonte secundária",tema:"Parcelamento",imp:"Médio",of:false,rt:false,
+  t:"Convênios ICMS 95 a 99/2026 abrem nova janela de regularização",
+  r:"Alteram o Convênio 79/2020 (redução de juros e multas), o 121/2016 (parcelamento de ME e EPP em Alagoas), incluem o Distrito Federal no 217/2023 e prorrogam prazos de adesão em AL e AP. Prazos a confirmar na legislação de cada estado.",
+  fn:"Convênios ICMS nº 95 a 99, de 04/09/2026 (DOU 09/09/2026)",fu:"https://www.confaz.fazenda.gov.br/legislacao/convenios/2026",lk:"indice"},
+
+ {d:"2026-09-09",esf:"Federal",uf:"Nacional",ft:"Documentação técnica",tema:"Reforma Tributária",imp:"Alto",of:true,rt:true,
+  t:"DeRE ganha documentação técnica na versão 1.2.0",
+  r:"Aprova leiautes, tabelas, regras de validação e o Manual do Desenvolvedor da Declaração de Regimes Específicos, incluindo controle de deduções da base de cálculo, reabertura de períodos encerrados e eventos transacionais com identificação individualizada de compradores. Alcança contribuintes dos regimes específicos de IBS, CBS e Imposto Seletivo.",
+  fn:"Ato Técnico Conjunto RFB/SUFIS/CGIBS nº 3, de 02/09/2026",fu:"https://www.gov.br/receitafederal/pt-br/assuntos/noticias/2026/setembro/dere-receita-federal-publica-versao-1-2-0-da-documentacao-tecnica-da-dere",lk:"ato"},
+
+ {d:"2026-09-08",esf:"Federal",uf:"Nacional",ft:"Órgão fazendário",tema:"Simples Nacional",imp:"Alto",of:true,rt:true,
+  prazo:"Duas decisões vencem em 30/09/2026",
+  t:"Prazo de 30/09 vale para o Simples 2027 e para o regime de IBS e CBS",
+  r:"São duas decisões distintas no mesmo prazo: pedir ingresso no Simples Nacional com efeitos a partir de 01/01/2027 e optar por recolher IBS e CBS fora do regime unificado, valendo de janeiro a junho de 2027. A norma que abriu a janela é a Resolução CGSN nº 190/2026 — o chamado Simples híbrido, que permite apurar IBS e CBS fora do DAS. O cancelamento da opção pode ser feito até 30/11/2026, e há nova janela de 1º a 31/03/2027 para o 2º semestre de 2027.",
+  fn:"Resolução CGSN nº 190, de 04/08/2026, e LC 214/2025",fu:"https://www.gov.br/receitafederal/pt-br/assuntos/noticias/2026/setembro/receita-federal-alerta-comeca-hoje-o-prazo-para-opcao-pelo-simples-nacional-e-para-a-escolha-do-modelo-de-recolhimento-do-ibs-e-da-cbs-em-2027",lk:"ato"},
+
+ {d:"2026-09-08",esf:"Federal",uf:"",ft:"Órgão fazendário",tema:"Transação",imp:"Alto",of:true,rt:false,
+  prazo:"Adesão até 30/09/2026, às 19h",
+  t:"Edital PGFN nº 6/2026 encerra adesão no fim do mês",
+  r:"Quatro modalidades em jogo: capacidade de pagamento, débitos irrecuperáveis ou de difícil recuperação, inscrições de pequeno valor e débitos garantidos por seguro-garantia ou carta de fiança. Alcança pessoas físicas e jurídicas com débitos inscritos em dívida ativa da União.",
+  fn:"Edital PGFN nº 6/2026",fu:"https://www.gov.br/pgfn/pt-br/servicos/orientacoes-contribuintes/acordo-de-transacao/edital-no-6-2026",lk:"ato"},
+
+ {d:"2026-09-08",esf:"Federal",uf:"Nacional",ft:"Fonte secundária",tema:"Obrigação acessória",imp:"Alto",of:false,rt:false,
+  prazo:"30/09: DCTFWeb, DITR 2026 e quota do ITR",
+  t:"Vencimentos se concentram na segunda quinzena de setembro",
+  r:"Entre 18 e 30/09 vencem contribuições previdenciárias e CPRB de agosto, Dirbi de julho, PGDAS-D e DAS do Simples, PIS/Cofins e IPI de agosto, e o bloco de 30/09 com DCTFWeb, DeCripto, DME, DOI, DTTA e DITR 2026. Confira cada prazo no ato e no e-CAC.",
+  fn:"Compilação de calendário fiscal, set/2026",fu:"https://www.contabeis.com.br/noticias/79345/obrigacoes-tributarias-que-vencem-na-2a-quinzena-de-setembro",lk:"noticia"},
+
+ {d:"2026-09-08",esf:"Federal",uf:"Nacional",ft:"Fonte secundária",tema:"Processo fiscal",imp:"Alto",of:false,rt:false,
+  prazo:"Entes têm até 04/09/2028 para adequar",
+  t:"LC 236/2026 segue sem regulamentação e o relógio dos municípios corre",
+  r:"A lei alterou o CTN para limitar multas, ampliar transação e fixar normas gerais de processo administrativo fiscal, dando dois anos para União, estados, DF e municípios adequarem a legislação. Quem não adequar passa a seguir os arts. 208-A a 208-J do CTN; acima de 100 mil habitantes, é exigido duplo grau administrativo.",
+  fn:"Lei Complementar nº 236, de 04/09/2026",fu:"https://www.planalto.gov.br/ccivil_03/leis/lcp/lcp236.htm",lk:"ato"}
+];
+
+const MARCOS = [
+ {q:"20/12/2023",w:"EC 132/2023 promulgada",y:"Cria o IVA dual — IBS e CBS — e o Imposto Seletivo, e fixa a transição até 2033.",st:"done"},
+ {q:"16/01/2025",w:"LC 214/2025",y:"Institui IBS, CBS e Imposto Seletivo. É a lei que os projetos em tramitação hoje tentam alterar item a item.",st:"done"},
+ {q:"13/01/2026",w:"LC 227/2026 sancionada",y:"Cria o Comitê Gestor do IBS, com vetos pontuais. Publicada no DOU de 14/01/2026.",st:"done"},
+ {q:"30/04/2026",w:"Regulamentos do IBS e da CBS",y:"Decreto nº 12.955/2026 regulamenta a CBS em 620 artigos; a Resolução CGIBS nº 6/2026 regulamenta o IBS. A Portaria Conjunta MF/CGIBS nº 7/2026 formaliza a parte comum.",st:"done"},
+ {q:"21/07/2026",w:"Decreto nº 13.075/2026",y:"Primeira alteração do regulamento da CBS — sinal de que o texto de abril não é estável.",st:"done"},
+ {q:"01/08/2026",w:"Fim da flexibilização das penalidades",y:"Primeiro dia útil do 4º mês após os regulamentos: a partir daí cabe punição por descumprimento de obrigação acessória de IBS e CBS.",st:"done"},
+ {q:"30/09/2026",w:"Escolha do regime de IBS e CBS para 2027",y:"Mesmo prazo da opção pelo Simples Nacional. É a próxima decisão irreversível do calendário.",st:"next"},
+ {q:"Out–Nov/2026",w:"APIs de apuração da CBS entram no ar",y:"Outubro: consulta de débitos e créditos. Novembro: pagamentos e emissão de DARF.",st:""},
+ {q:"01/01/2027",w:"CBS passa a ser cobrada",y:"Fim da dispensa de recolhimento que vigorou por todo o exercício de 2026.",st:""},
+ {q:"2029–2032",w:"Transição do ICMS e do ISS",y:"Redução gradual dos tributos antigos enquanto o IBS sobe.",st:""},
+ {q:"2033",w:"Sistema novo pleno",y:"ICMS e ISS extintos.",st:""}
+];
+
+const CTM = [
+ {
+  "pos": 1,
+  "m": "Fortaleza",
+  "ibge": "2304400",
+  "pop": "2.582.360",
+  "lei": "LC nº 159, de 23/12/2013",
+  "url": "https://sapl.fortaleza.ce.leg.br/norma/3699",
+  "iss": "2% a 5%",
+  "lc": "Contencioso administrativo já estruturado; LC 452/2025 alterou o CTM",
+  "st": "conf"
+ },
+ {
+  "pos": 2,
+  "m": "Caucaia",
+  "ibge": "2303709",
+  "pop": "380.944",
+  "lei": "LC nº 02, de 23/12/2009",
+  "url": "https://sefin.caucaia.ce.gov.br/legislacao/",
+  "iss": "não localizado",
+  "lc": "Consolidado até a LC 167/2026 — quatro alterações entre fev/2025 e jun/2026",
+  "st": "conf"
+ },
+ {
+  "pos": 3,
+  "m": "Juazeiro do Norte",
+  "ibge": "2307304",
+  "pop": "307.928",
+  "lei": "LC nº 93, de 20/12/2013",
+  "url": "https://www.juazeirodonorte.ce.gov.br/leis.php?id=4031",
+  "iss": "2% a 5%",
+  "lc": "LC 143/2025 criou domicílio tributário e processo fiscal eletrônicos; revisão integral do CTM em curso",
+  "st": "conf"
+ },
+ {
+  "pos": 4,
+  "m": "Maracanaú",
+  "ibge": "2307650",
+  "pop": "253.442",
+  "lei": "Lei nº 3.805/2025",
+  "url": "https://www.maracanau.ce.gov.br/download/lei-n-3-805-2025-institui-o-codigo-tributario-do-municipio-de-maracanau-e-da-outras-providencias/",
+  "iss": "não localizado",
+  "lc": "CTM inteiramente novo em 2025",
+  "st": "conf"
+ },
+ {
+  "pos": 5,
+  "m": "Sobral",
+  "ibge": "2312908",
+  "pop": "217.690",
+  "lei": "LC nº 39, de 23/12/2013",
+  "url": "https://sefin.sobral.ce.gov.br/media/com_download/files/20220201123529.pdf",
+  "iss": "2% a 5%",
+  "lc": "Sem alteração desde a LC 80/2021 — obrigado ao duplo grau e sem movimento visível",
+  "st": "conf"
+ },
+ {
+  "pos": 6,
+  "m": "Crato",
+  "ibge": "2304202",
+  "pop": "139.781",
+  "lei": "Lei nº 3.332/2017",
+  "url": "https://crato.ce.gov.br/leis.php?id=139",
+  "iss": "2% a 5%",
+  "lc": "Nenhuma movimentação localizada",
+  "st": "conf"
+ },
+ {
+  "pos": 7,
+  "m": "Itapipoca",
+  "ibge": "2306405",
+  "pop": "137.795",
+  "lei": "Lei nº 082, de 25/11/2021",
+  "url": "https://www.itapipoca.ce.gov.br/leis.php?id=978",
+  "iss": "não localizado",
+  "lc": "Última alteração em 2022; nenhuma movimentação localizada",
+  "st": "conf"
+ },
+ {
+  "pos": 8,
+  "m": "Maranguape",
+  "ibge": "2307700",
+  "pop": "108.323",
+  "lei": "não localizada",
+  "url": "",
+  "iss": "não localizado",
+  "lc": "Acima de 100 mil habitantes e sem CTM localizável online",
+  "st": "nao"
+ },
+ {
+  "pos": 9,
+  "m": "Iguatu",
+  "ibge": "2305506",
+  "pop": "102.907",
+  "lei": "Lei nº 1.061, de 29/12/2005",
+  "url": "https://www.mpce.mp.br/wp-content/uploads/2019/09/CodigoTributario-Iguatu.pdf",
+  "iss": "cota fixa anual para autônomos",
+  "lc": "CTM de 2005, o mais antigo entre os obrigados; nenhuma movimentação localizada",
+  "st": "conf"
+ },
+ {
+  "pos": 10,
+  "m": "Quixadá",
+  "ibge": "2311306",
+  "pop": "89.190",
+  "lei": "LC nº 43, de 30/12/2025",
+  "url": "https://quixada.ce.gov.br/decretos.php",
+  "iss": "não localizado",
+  "lc": "CTM novo, regulamentado pelo Decreto 20/2026",
+  "st": "conf"
+ },
+ {
+  "pos": 11,
+  "m": "Tianguá",
+  "ibge": "a levantar",
+  "pop": "86.968",
+  "lei": "Lei nº 358, de 30/12/2003",
+  "url": "https://www.taxpratico.com.br/pagina/lei-n-358-de-30-de-dezembro-de-2003-codigo-tributario-do-tiangua",
+  "iss": "não localizado",
+  "lc": "CTM de 2003 — abaixo de 100 mil hab.",
+  "st": "sec"
+ },
+ {
+  "pos": 12,
+  "m": "Pacatuba",
+  "ibge": "a levantar",
+  "pop": "86.564",
+  "lei": "Lei nº 021, de 20/10/2017",
+  "url": "https://cmpacatuba.ce.gov.br/leis/827",
+  "iss": "não localizado",
+  "lc": "Abaixo de 100 mil hab.",
+  "st": "conf"
+ },
+ {
+  "pos": 13,
+  "m": "Quixeramobim",
+  "ibge": "a levantar",
+  "pop": "86.431",
+  "lei": "Lei nº 2.645, de 19/12/2013",
+  "url": "https://www.cmquixeramobim.ce.gov.br/wp-content/uploads/2019/10/COD-TRIB-QUIXERA-Lei-n%C2%BA-2.645-2013-Vers%C3%A3o-Final-Com-atualiza%C3%A7%C3%B5es-posteriores-2018.pdf",
+  "iss": "2% a 5% (regra geral 5%)",
+  "lc": "Consolidado com alterações até 2018",
+  "st": "conf"
+ },
+ {
+  "pos": 14,
+  "m": "Aquiraz",
+  "ibge": "a levantar",
+  "pop": "85.316",
+  "lei": "Lei nº 566/2005, de 17/11/2005",
+  "url": "http://www.mpce.mp.br/wp-content/uploads/2019/09/CodigoTributario-Aquiraz.pdf",
+  "iss": "máxima de 5%",
+  "lc": "Abaixo de 100 mil hab.",
+  "st": "sec"
+ },
+ {
+  "pos": 15,
+  "m": "Eusébio",
+  "ibge": "a levantar",
+  "pop": "82.016",
+  "lei": "LC nº 036, de 30/10/2017",
+  "url": "https://sapl.eusebio.ce.leg.br/media/sapl/public/normajuridica/2024/2998/lc_108_2024_altera_lc_36_2017_ctm.pdf",
+  "iss": "não localizado",
+  "lc": "LC nº 108/2024 altera o CTM — existência confirmada no SAPL, teor não lido",
+  "st": "sec"
+ },
+ {
+  "pos": 16,
+  "m": "Barbalha",
+  "ibge": "a levantar",
+  "pop": "81.441",
+  "lei": "LC nº 008, de 29/12/2025",
+  "url": "https://barbalha.ce.gov.br/leis.php?id=911",
+  "iss": "não localizado",
+  "lc": "CTM inteiramente novo, sancionado em dez/2025 — supera a lei de 1997",
+  "st": "conf"
+ },
+ {
+  "pos": 17,
+  "m": "Horizonte",
+  "ibge": "a levantar",
+  "pop": "81.161",
+  "lei": "LC nº 001, de 30/12/2009",
+  "url": "http://www.mpce.mp.br/wp-content/uploads/2019/09/CodigoTributario-Horizonte.pdf",
+  "iss": "não localizado",
+  "lc": "Abaixo de 100 mil hab.",
+  "st": "sec"
+ },
+ {
+  "pos": 18,
+  "m": "Crateús",
+  "ibge": "a levantar",
+  "pop": "80.130",
+  "lei": "Lei nº 427/2000, de 19/12/2000",
+  "url": "http://www.mpce.mp.br/wp-content/uploads/2019/09/CodigoTributario-Crateus.pdf",
+  "iss": "não localizado",
+  "lc": "Ano da lei não lido diretamente do documento — digitalização com falha",
+  "st": "sec"
+ },
+ {
+  "pos": 19,
+  "m": "Aracati",
+  "ibge": "a levantar",
+  "pop": "79.205",
+  "lei": "Lei nº 51/1998",
+  "url": "http://www.mpce.mp.br/wp-content/uploads/2019/09/CodigoTributario-Aracati-Leis51_1998.pdf",
+  "iss": "não localizado",
+  "lc": "Divergência resolvida: a LC 003/2017 trata de reestruturação administrativa, não de tributos",
+  "st": "sec"
+ },
+ {
+  "pos": 20,
+  "m": "Canindé",
+  "ibge": "a levantar",
+  "pop": "77.376",
+  "lei": "Lei nº 2.384, de 29/12/2017",
+  "url": "https://www.caninde.ce.gov.br/leis.php?id=965",
+  "iss": "não localizado",
+  "lc": "Prefeitura prevalece sobre o MPCE, que ainda lista a Lei 2.031",
+  "st": "conf"
+ },
+ {
+  "pos": 21,
+  "m": "Cascavel",
+  "ibge": "a levantar",
+  "pop": "76.866",
+  "lei": "Lei nº 1.203/2005, de 30/09/2005",
+  "url": "https://www.cascavel.ce.gov.br/leis.php?id=195",
+  "iss": "não localizado",
+  "lc": "Abaixo de 100 mil hab.",
+  "st": "conf"
+ },
+ {
+  "pos": 22,
+  "m": "Pacajus",
+  "ibge": "a levantar",
+  "pop": "75.454",
+  "lei": "Lei nº 371/2014, de 30/12/2014",
+  "url": "https://pacajus.ce.gov.br/leis.php?id=93",
+  "iss": "não localizado",
+  "lc": "Alterada pela Lei nº 561/2018",
+  "st": "conf"
+ },
+ {
+  "pos": 23,
+  "m": "Russas",
+  "ibge": "2311801",
+  "pop": "75.073",
+  "lei": "Lei nº 914/2003, de 28/11/2003",
+  "url": "http://www.mpce.mp.br/wp-content/uploads/2019/09/CodigoTributario-Russas.pdf",
+  "iss": "não localizado",
+  "lc": "Prefeitura anuncia nova lei de ISS em vigor e há a Lei 1961/2021 — não verificado se altera o CTM",
+  "st": "sec"
+ },
+ {
+  "pos": 24,
+  "m": "Itaitinga",
+  "ibge": "2306256",
+  "pop": "74.250",
+  "lei": "LC nº 012, de 28/12/2022",
+  "url": "https://www.itaitinga.ce.gov.br/leis.php?id=1249",
+  "iss": "não localizado",
+  "lc": "Ausente do repositório do MPCE; localizado no portal da prefeitura",
+  "st": "conf"
+ },
+ {
+  "pos": 25,
+  "m": "Acaraú",
+  "ibge": "2300200",
+  "pop": "69.317",
+  "lei": "Lei nº 1.506/2013 (data não confirmada)",
+  "url": "http://www.mpce.mp.br/wp-content/uploads/2019/09/CodigoTributario-Acarau-Leis1506_2013.pdf",
+  "iss": "não localizado",
+  "lc": "Alterada pela Lei nº 1.704/2017",
+  "st": "sec"
+ },
+ {
+  "pos": 26,
+  "m": "Camocim",
+  "ibge": "2302602",
+  "pop": "65.459",
+  "lei": "LC nº 001/06, de 13/02/2006",
+  "url": "http://www.mpce.mp.br/wp-content/uploads/2019/09/CodigoTributario-Camocim.pdf",
+  "iss": "por UFIRCE e coeficiente, sem alíquota fixa",
+  "lc": "Desconto de 60% no 1º ano e 30% no 2º de registro",
+  "st": "sec"
+ },
+ {
+  "pos": 27,
+  "m": "Morada Nova",
+  "ibge": "2308708",
+  "pop": "65.453",
+  "lei": "Lei nº 1.637, de 16/10/2013",
+  "url": "http://www.mpce.mp.br/wp-content/uploads/2019/09/CodigoTributario-MoradaNova.pdf",
+  "iss": "não localizado",
+  "lc": "Empate técnico com Camocim — 6 habitantes separam as posições",
+  "st": "sec"
+ },
+ {
+  "pos": 28,
+  "m": "Tauá",
+  "ibge": "2313302",
+  "pop": "65.035",
+  "lei": "Lei nº 1.768, de 29/12/2010",
+  "url": "http://www.mpce.mp.br/wp-content/uploads/2019/09/CodigoTributario-Taua.pdf",
+  "iss": "não localizado",
+  "lc": "Abaixo de 100 mil hab.",
+  "st": "sec"
+ },
+ {
+  "pos": 29,
+  "m": "Icó",
+  "ibge": "2305407",
+  "pop": "64.691",
+  "lei": "Lei nº 1.114, de 23/12/2021",
+  "url": "https://www.ico.ce.gov.br/leis.php?id=1855",
+  "iss": "não localizado",
+  "lc": "Novo CTM em 2021",
+  "st": "conf"
+ },
+ {
+  "pos": 30,
+  "m": "Viçosa do Ceará",
+  "ibge": "2314102",
+  "pop": "63.316",
+  "lei": "Lei nº 601, de 11/12/2012",
+  "url": "https://www.vicosa.ce.gov.br/leis.php?id=443",
+  "iss": "não localizado",
+  "lc": "Alterada pela Lei nº 698/2017",
+  "st": "conf"
+ },
+ {
+  "pos": 31,
+  "m": "Limoeiro do Norte",
+  "ibge": "2307601",
+  "pop": "62.945",
+  "lei": "Lei nº 1.214, de 30/09/2005",
+  "url": "https://www.limoeirodonorte.ce.gov.br/leis.php?id=535",
+  "iss": "não localizado",
+  "lc": "Alterada pela Lei nº 2.077/2018",
+  "st": "conf"
+ },
+ {
+  "pos": 32,
+  "m": "Trairi",
+  "ibge": "2313500",
+  "pop": "62.466",
+  "lei": "não levantada",
+  "url": "",
+  "iss": "não localizado",
+  "lc": "PDF do MPCE sem camada de texto; a LC 002/2021 foi verificada e trata de estrutura administrativa",
+  "st": "nao"
+ },
+ {
+  "pos": 33,
+  "m": "São Gonçalo do Amarante",
+  "ibge": "2312403",
+  "pop": "58.848",
+  "lei": "LC nº 006/2013 (data não confirmada)",
+  "url": "https://sefin.pmsga.ce.gov.br/legislacao-tributaria/",
+  "iss": "não localizado",
+  "lc": "Alterada pela LC nº 007/2014 quanto à CIP",
+  "st": "sec"
+ },
+ {
+  "pos": 34,
+  "m": "Beberibe",
+  "ibge": "2302206",
+  "pop": "56.272",
+  "lei": "Lei nº 1.020, de 30/12/2009",
+  "url": "https://beberibe.ce.gov.br/leis.php?cat=27",
+  "iss": "não localizado",
+  "lc": "Alterada pela LC nº 67/2024",
+  "st": "conf"
+ },
+ {
+  "pos": 35,
+  "m": "Granja",
+  "ibge": "2304707",
+  "pop": "55.975",
+  "lei": "LC nº 22, de 17/11/2022",
+  "url": "https://camaragranja.ce.gov.br/leis/export",
+  "iss": "não localizado",
+  "lc": "Supera a Lei 1.005/2013 do acervo do MPCE; Refis pela Lei 1.358/2025. Sem movimento de adequação à LC 236/2026",
+  "st": "conf"
+ },
+ {
+  "pos": 36,
+  "m": "Brejo Santo",
+  "ibge": "2302503",
+  "pop": "54.192",
+  "lei": "LC nº 660, de 29/12/2009",
+  "url": "https://www.brejosanto.ce.gov.br/wp-content/uploads/2019/09/LEI-COMPLEMENTAR-N.º-660.2009-29.12.209-CODIGO-TRIBUTÁRIO.pdf",
+  "iss": "2% para serviços de saúde ao SUS (item específico)",
+  "lc": "Alterado pelas LC 742/2012 e 810/2014; ausente do repositório do MPCE",
+  "st": "conf"
+ },
+ {
+  "pos": 37,
+  "m": "Boa Viagem",
+  "ibge": "2302404",
+  "pop": "52.100",
+  "lei": "Lei nº 1.709, de 30/12/2025",
+  "url": "https://mpce.mp.br/wp-content/uploads/2026/05/LEI_MUNICIPAL_1709_2025_0000001.pdf",
+  "iss": "não localizado",
+  "lc": "CTM novíssimo, mas anterior à LC 236/2026 — já nasce precisando de ajuste de multas e PAF. Refis pela Lei 1.755/2026",
+  "st": "conf"
+ },
+ {
+  "pos": 38,
+  "m": "São Benedito",
+  "ibge": "2312304",
+  "pop": "50.274",
+  "lei": "Lei nº 1.065, de 20/12/2016",
+  "url": "https://www.saobenedito.ce.gov.br/leis.php?id=796",
+  "iss": "não localizado",
+  "lc": "Ausente do MPCE; a Lei 1.591/2026 trata de precatórios (EC 136), não do CTM",
+  "st": "conf"
+ },
+ {
+  "pos": 39,
+  "m": "Itapajé",
+  "ibge": "2306306",
+  "pop": "49.061",
+  "lei": "Lei nº 1.885, de 06/12/2013",
+  "url": "https://www.itapaje.ce.gov.br/leis.php?id=868",
+  "iss": "não localizado",
+  "lc": "Alterada pela Lei nº 1.922/2014; ausente do repositório do MPCE",
+  "st": "conf"
+ },
+ {
+  "pos": 40,
+  "m": "Mauriti",
+  "ibge": "2308104",
+  "pop": "47.592",
+  "lei": "Lei nº 1.297, de 12/12/2014",
+  "url": "http://www.mpce.mp.br/wp-content/uploads/2019/09/CodigoTributario-Mauriti.pdf",
+  "iss": "não localizado — Tabela II fora do PDF",
+  "lc": "Alterada pela Lei 1.617/2021; Refis pela Lei 1.995/2026",
+  "st": "sec"
+ },
+ {
+  "pos": 41,
+  "m": "Itarema",
+  "ibge": "2306553",
+  "pop": "45.852",
+  "lei": "Lei nº 697, de 19/12/2017",
+  "url": "https://www.itarema.ce.gov.br/leis.php?id=181",
+  "iss": "não localizado",
+  "lc": "Supera a Lei 255/2003; alterada pela LC 825/2021 e pela Lei 1.041/2026 (taxas de abate)",
+  "st": "conf"
+ },
+ {
+  "pos": 42,
+  "m": "Acopiara",
+  "ibge": "2300309",
+  "pop": "45.673",
+  "lei": "Lei nº 1.469, de 19/12/2007",
+  "url": "http://www.mpce.mp.br/wp-content/uploads/2019/09/CodigoTributario-Acopiara.pdf",
+  "iss": "não localizado — Anexo II fora do PDF",
+  "lc": "O portal oficial não lista o CTM; confirmação apenas no acervo do MPCE",
+  "st": "sec"
+ },
+ {
+  "pos": 43,
+  "m": "Amontada",
+  "ibge": "2300754",
+  "pop": "44.814",
+  "lei": "Lei de 25/07/2018 (número não confirmado)",
+  "url": "https://www.amontada.ce.gov.br/publicacoes.php?id=302",
+  "iss": "não localizado",
+  "lc": "Abaixo de 100 mil hab.; nenhuma norma de adequação localizada",
+  "st": "nao"
+ },
+ {
+  "pos": 44,
+  "m": "Guaraciaba do Norte",
+  "ibge": "2305001",
+  "pop": "44.565",
+  "lei": "Lei nº 1.084, de 20/12/2013",
+  "url": "https://cmguaraciabadonorte.ce.gov.br/institucional/legislacao/esfera/596/",
+  "iss": "não localizado",
+  "lc": "Abaixo de 100 mil hab.; nenhuma norma de adequação localizada",
+  "st": "conf"
+ },
+ {
+  "pos": 45,
+  "m": "Ipu",
+  "ibge": "2305803",
+  "pop": "43.084",
+  "lei": "Lei nº 009/90 (data não confirmada)",
+  "url": "https://www.cmipu.ce.gov.br/normativosproprios/146-2",
+  "iss": "não localizado",
+  "lc": "Abaixo de 100 mil hab.; nenhuma norma de adequação localizada",
+  "st": "sec"
+ },
+ {
+  "pos": 46,
+  "m": "Paracuru",
+  "ibge": "2310209",
+  "pop": "42.317",
+  "lei": "não localizada",
+  "url": "https://mpce.mp.br/wp-content/uploads/2019/09/CodigoTributario-Paracuru.pdf",
+  "iss": "não localizado",
+  "lc": "Abaixo de 100 mil hab.; nenhuma norma de adequação localizada",
+  "st": "nao"
+ },
+ {
+  "pos": 47,
+  "m": "Pedra Branca",
+  "ibge": "2310506",
+  "pop": "42.198",
+  "lei": "Lei nº 908, de 01/04/2025",
+  "url": "https://camarapedrabranca.ce.gov.br/leis/763",
+  "iss": "não localizado",
+  "lc": "CTM refeito em abr/2025, anterior à LC 236/2026; abaixo de 100 mil hab.",
+  "st": "conf"
+ },
+ {
+  "pos": 48,
+  "m": "Santa Quitéria",
+  "ibge": "2312205",
+  "pop": "41.496",
+  "lei": "Lei nº 470, de 29/12/2005",
+  "url": "https://mpce.mp.br/wp-content/uploads/2019/09/CodigoTributario-SantaQuit%C3%A9ria.pdf",
+  "iss": "não localizado",
+  "lc": "Abaixo de 100 mil hab.; nenhuma norma de adequação localizada",
+  "st": "conf"
+ },
+ {
+  "pos": 49,
+  "m": "Várzea Alegre",
+  "ibge": "2314003",
+  "pop": "40.980",
+  "lei": "LC nº 601, de 08/02/2010",
+  "url": "https://mpce.mp.br/wp-content/uploads/2019/09/CodigoTributario-VarzeaAlegre.pdf",
+  "iss": "não localizado",
+  "lc": "Abaixo de 100 mil hab.; nenhuma norma de adequação localizada",
+  "st": "conf"
+ },
+ {
+  "pos": 50,
+  "m": "Pentecoste",
+  "ibge": "2310704",
+  "pop": "40.081",
+  "lei": "Lei nº 732, de 20/12/2013",
+  "url": "https://mpce.mp.br/wp-content/uploads/2019/09/CodigoTributario-Pentecoste.pdf",
+  "iss": "não localizado",
+  "lc": "Abaixo de 100 mil hab.; nenhuma norma de adequação localizada",
+  "st": "conf"
+ },
+ {
+  "pos": 51,
+  "m": "Massapê",
+  "ibge": "2308005",
+  "pop": "40.037",
+  "lei": "LC Municipal nº 005/2013 (dia e mês não confirmados)",
+  "url": "https://camaramassape.ce.gov.br/lei/3998",
+  "iss": "não localizado",
+  "lc": "Abaixo de 100 mil hab.; alterada pela Lei 14/2025 (06/11/2025), anterior à LC 236/2026",
+  "st": "sec"
+ },
+ {
+  "pos": 52,
+  "m": "Missão Velha",
+  "ibge": "2308401",
+  "pop": "39.215",
+  "lei": "Lei nº 091, de 24/01/2010",
+  "url": "https://camaramissaovelha.ce.gov.br/leis/96",
+  "iss": "não localizado",
+  "lc": "Abaixo de 100 mil hab.; nenhuma norma de adequação localizada",
+  "st": "conf"
+ },
+ {
+  "pos": 53,
+  "m": "Ipueiras",
+  "ibge": "2305902",
+  "pop": "38.287",
+  "lei": "Lei nº 841, de 22/12/2014",
+  "url": "https://ipueiras.ce.gov.br/leis.php?id=368",
+  "iss": "não localizado",
+  "lc": "Abaixo de 100 mil hab.; supera a Lei 566/2003 arquivada no MPCE",
+  "st": "conf"
+ },
+ {
+  "pos": 54,
+  "m": "Mombaça",
+  "ibge": "2308500",
+  "pop": "38.264",
+  "lei": "LC nº 750, de 21/12/2016",
+  "url": "https://mombaca.ce.gov.br/leis.php?id=492",
+  "iss": "norma identificada, percentual não: Anexo I da LC 750/2016 na redação da LC 853/2025",
+  "lc": "Abaixo de 100 mil hab.; alterada 4x até 29/12/2025, tudo anterior à LC 236/2026",
+  "st": "conf"
+ },
+ {
+  "pos": 55,
+  "m": "Baturité",
+  "ibge": "2302107",
+  "pop": "37.308",
+  "lei": "Lei nº 1.282, de 30/12/2005",
+  "url": "https://www.camarabaturite.ce.gov.br/leis/421",
+  "iss": "não localizado — art. 55 remete à Tabela II, fora do PDF",
+  "lc": "Recursos administrativos nos arts. 73 a 76, sem 2ª instância; multas de até 100% sem teto geral. Alterada pela LC 003/2021",
+  "st": "conf"
+ },
+ {
+  "pos": 56,
+  "m": "Bela Cruz",
+  "ibge": "2302305",
+  "pop": "34.776",
+  "lei": "LC nº 001/2021, de 14/12/2021",
+  "url": "https://www.belacruz.ce.gov.br/leis.php?id=453",
+  "iss": "não localizado — Anexo II fora do PDF",
+  "lc": "Abaixo de 100 mil hab.; alterada pela LC 001/2022, anterior à LC 236/2026",
+  "st": "conf"
+ },
+ {
+  "pos": 57,
+  "m": "Ubajara",
+  "ibge": "2313609",
+  "pop": "34.531",
+  "lei": "Lei nº 187, de 22/08/1975 — texto vigente na Lei nº 1.056, de 16/12/2013",
+  "url": "https://www.ubajara.ce.gov.br/leis.php?id=637",
+  "iss": "não localizado — art. 103 remete à Tabela de Receita II, fora do PDF",
+  "lc": "Há julgamento administrativo (art. 22) e recursos (art. 8), mas duplo grau não confirmado",
+  "st": "conf"
+ },
+ {
+  "pos": 58,
+  "m": "Paraipaba",
+  "ibge": "2310258",
+  "pop": "34.266",
+  "lei": "Lei nº 239, de 17/11/2000",
+  "url": "https://www.paraipaba.ce.gov.br/leis.php?id=232",
+  "iss": "não localizado",
+  "lc": "Abaixo de 100 mil hab.; alterada pela Lei 503/2009",
+  "st": "conf"
+ },
+ {
+  "pos": 59,
+  "m": "Jaguaruana",
+  "ibge": "2307007",
+  "pop": "33.159",
+  "lei": "Lei nº 009/2005, de 17/03/2005",
+  "url": "https://www.jaguaruana.ce.gov.br/leis.php?id=380",
+  "iss": "não localizado",
+  "lc": "Abaixo de 100 mil hab.: duplo grau facultativo. CTM anterior à LC 236/2026 — não adaptado; alterado pelas Leis 616/2016, 675/2016, 726/2017 e 761/2018",
+  "st": "conf"
+ },
+ {
+  "pos": 60,
+  "m": "Parambu",
+  "ibge": "2310308",
+  "pop": "32.916",
+  "lei": "não confirmada",
+  "url": "http://camaraparambu.ce.gov.br/CAMARAPARAMBU/faces/jsp/leis.jsp",
+  "iss": "não localizado",
+  "lc": "Documento oficial \"Legislação Tributária\" existe no portal da Câmara, mas é PDF apenas-imagem; não consta do acervo do MPCE",
+  "st": "nao"
+ },
+ {
+  "pos": 61,
+  "m": "Santana do Acaraú",
+  "ibge": "2312007",
+  "pop": "32.218",
+  "lei": "não confirmada",
+  "url": "https://www.santanadoacarau.ce.gov.br/leis.php?id=101",
+  "iss": "não localizado",
+  "lc": "A Prefeitura rotula o registro como Código Tributário; as 1.108 leis exportadas da Câmara não trazem norma instituidora — o CTM antecede a digitalização",
+  "st": "nao"
+ },
+ {
+  "pos": 62,
+  "m": "Lavras da Mangabeira",
+  "ibge": "2307502",
+  "pop": "32.201",
+  "lei": "Lei nº 506, de 13/11/2017",
+  "url": "https://www.lavrasdamangabeira.ce.gov.br/leis.php?id=148",
+  "iss": "não localizado",
+  "lc": "Abaixo de 100 mil hab.: duplo grau facultativo. CTM anterior à LC 236/2026 — não adaptado; revogou a LC 001/2005",
+  "st": "conf"
+ },
+ {
+  "pos": 63,
+  "m": "Tabuleiro do Norte",
+  "ibge": "2313104",
+  "pop": "32.196",
+  "lei": "não confirmada",
+  "url": "https://mpce.mp.br/wp-content/uploads/2019/09/CodigoTributario-Tabuleiro.do_.Norte_.pdf",
+  "iss": "não localizado",
+  "lc": "Só o MPCE tem o texto, em digitalização acima de 30 MB e ilegível; as 2.756 normas do SAPL da Câmara não trazem nenhuma com \"tributário\" na ementa",
+  "st": "sec"
+ },
+ {
+  "pos": 64,
+  "m": "Nova Russas",
+  "ibge": "2309300",
+  "pop": "32.089",
+  "lei": "Lei nº 1.066, de 26/12/2017",
+  "url": "https://www.novarussas.ce.gov.br/leis.php?id=147",
+  "iss": "não localizado",
+  "lc": "Abaixo de 100 mil hab.: duplo grau facultativo. CTM anterior à LC 236/2026 — não adaptado; a lei altera e consolida a legislação tributária; não consta do acervo do MPCE",
+  "st": "conf"
+ },
+ {
+  "pos": 65,
+  "m": "Novo Oriente",
+  "ibge": "2309409",
+  "pop": "29.097",
+  "lei": "LC nº 005, de 15/09/2025",
+  "url": "https://www.camaranovooriente.ce.gov.br/leis/1135",
+  "iss": "2% em loterias e plataformas (LC 004/2025) — geral não confirmada",
+  "lc": "CTM mais recente do lote, de set/2025, e ainda anterior à LC 236/2026. Cadeia: Lei 723/2015 → LC 001/2017 → LC 001/2023 → LC 005/2025",
+  "st": "conf"
+ },
+ {
+  "pos": 66,
+  "m": "Jardim",
+  "ibge": "2307106",
+  "pop": "28.801",
+  "lei": "LC nº 011, de 26/12/2023",
+  "url": "https://www.jardim.ce.gov.br/leis.php?id=1642",
+  "iss": "não localizado",
+  "lc": "Abaixo de 100 mil hab.: duplo grau facultativo. CTM anterior à LC 236/2026 — não adaptado; revisão e consolidação da legislação tributária",
+  "st": "conf"
+ },
+ {
+  "pos": 67,
+  "m": "Jaguaribe",
+  "ibge": "2306900",
+  "pop": "35.161",
+  "lei": "Lei nº 1.387, de 02/10/2017",
+  "url": "https://www.jaguaribe.ce.gov.br/leis.php?id=222",
+  "iss": "não localizado",
+  "lc": "Abaixo de 100 mil hab.: duplo grau facultativo. CTM anterior à LC 236/2026 — não adaptado; substituiu a Lei 675/1997 e foi alterado pela Lei 1.429/2018. Entrada fora de ordem: corrige a falha registrada em 21/09, quando o município ficou de fora da faixa de 35 mil",
+  "st": "conf"
+ },
+ {
+  "pos": 68,
+  "m": "Redenção",
+  "ibge": "2311603",
+  "pop": "28.405",
+  "lei": "Lei nº 1.663, de 29/09/2017",
+  "url": "https://redencao.ce.gov.br/leis.php?id=166",
+  "iss": "não localizado — mas a Lei 2.058, de 03/06/2026, redefine base e alíquotas do ISSQN na engenharia e construção civil",
+  "lc": "Abaixo de 100 mil hab.: duplo grau facultativo. CTM anterior à LC 236/2026 — não adaptado; alterado pela Lei 1.672/2018 e pela Lei 2.058/2026. É o único dos oito com movimento de ISS em 2026",
+  "st": "conf"
+ },
+ {
+  "pos": 69,
+  "m": "Caririaçu",
+  "ibge": "2303204",
+  "pop": "27.532",
+  "lei": "Lei nº 270/2000 — data completa não confirmada",
+  "url": "https://camaracaririacu.ce.gov.br/institucional/legislacao/?esfera_federacao=M&ementa=tributario",
+  "iss": "não localizado",
+  "lc": "Abaixo de 100 mil hab.: duplo grau facultativo. CTM de 2000, o mais antigo da leva, anterior à LC 236/2026 — não adaptado; alterado pela Lei 574, de 14/11/2013, cuja ementa é a única prova do número da lei-base",
+  "st": "sec"
+ },
+ {
+  "pos": 70,
+  "m": "Marco",
+  "ibge": "2307809",
+  "pop": "27.283",
+  "lei": "LC nº 004, de 23/12/2009",
+  "url": "http://www.mpce.mp.br/wp-content/uploads/2019/09/CodigoTributario-Marco.pdf",
+  "iss": "5% em regra, 3% na construção civil (item 7.02), 2% em itens específicos — Anexo Único da LC 014/2017",
+  "lc": "Abaixo de 100 mil hab.: duplo grau facultativo. CTM anterior à LC 236/2026 — não adaptado; alterado pelas LCs 014/2017 (tabela do ISS), 016/2018 e 017/2018. Único dos oito com alíquota de ISS confirmada",
+  "st": "conf"
+ },
+ {
+  "pos": 71,
+  "m": "Milagres",
+  "ibge": "2308302",
+  "pop": "26.819",
+  "lei": "Lei nº 1.406, de 31/12/2020",
+  "url": "https://www.camaramilagres.ce.gov.br/leis",
+  "iss": "não localizado",
+  "lc": "Abaixo de 100 mil hab.: duplo grau facultativo. CTM anterior à LC 236/2026 — não adaptado; alterado pela Lei 1.530, de 21/12/2023. Varredura até a Lei 1.706, de 02/09/2026, não encontrou novo código",
+  "st": "conf"
+ },
+ {
+  "pos": 72,
+  "m": "Aracoiaba",
+  "ibge": "2301208",
+  "pop": "26.752",
+  "lei": "Lei nº 1.324, de 06/07/2021",
+  "url": "https://aracoiaba.ce.gov.br/leis.php?id=1034",
+  "iss": "não localizado",
+  "lc": "Abaixo de 100 mil hab.: duplo grau facultativo. CTM anterior à LC 236/2026 — não adaptado; estabelece o novo código e consolida a legislação tributária. Os dois arquivos do MPCE (Leis 629/1997 e 1.239/2017) estão superados",
+  "st": "conf"
+ },
+ {
+  "pos": 73,
+  "m": "Campos Sales",
+  "ibge": "2302701",
+  "pop": "26.017",
+  "lei": "Lei nº 581, de 15/12/2017",
+  "url": "https://www.cmcampossales.ce.gov.br/leis?pagina=2",
+  "iss": "não localizado",
+  "lc": "Abaixo de 100 mil hab.: duplo grau facultativo. CTM anterior à LC 236/2026 — não adaptado; superou a Lei 495/2013, que instituíra o Código Tributário e de Rendas do Município",
+  "st": "conf"
+ },
+ {
+  "pos": 74,
+  "m": "Tamboril",
+  "ibge": "2313203",
+  "pop": "25.287",
+  "lei": "LC nº 124, de 29/12/2003",
+  "url": "https://www.tamboril.ce.gov.br/leis.php?id=204",
+  "iss": "não localizado",
+  "lc": "Abaixo de 100 mil hab.: duplo grau facultativo. CTM de 2003, anterior à LC 236/2026 — não adaptado; alterado pela Lei 15, de 29/09/2017, cuja ementa transcreve número e data da lei-base. O MPCE não tem arquivo do município",
+  "st": "sec"
+ },
+ {
+  "pos": 75,
+  "m": "Guaiúba",
+  "ibge": "2304954",
+  "pop": "25.227",
+  "lei": "Lei nº 404, de 29/12/2005",
+  "url": "https://www.guaiuba.ce.gov.br/leis.php?id=1253",
+  "iss": "não localizado — PDF em /arquivos/ bloqueado por robots.txt",
+  "lc": "Abaixo de 100 mil hab.: duplo grau facultativo. CTM anterior à LC 236/2026 — não adaptado; alterado pela Lei 1.121/2023 (ISS de corretagem e agenciamento). Refis 2026 pela Lei 1.308, de 01/09/2026",
+  "st": "conf"
+ },
+ {
+  "pos": 76,
+  "m": "Pindoretama",
+  "ibge": "2310852",
+  "pop": "25.214",
+  "lei": "Lei nº 474, de 31/10/2017",
+  "url": "https://www.pindoretama.ce.gov.br/leis.php?id=622",
+  "iss": "não localizado — PDF bloqueado; o arquivo do MPCE remete a Tabela II ausente",
+  "lc": "Abaixo de 100 mil hab.: duplo grau facultativo. CTM anterior à LC 236/2026 — não adaptado; alterado pela Lei 618/2022 (adequação às LC 175/2020 e 183/2021)",
+  "st": "conf"
+ },
+ {
+  "pos": 77,
+  "m": "Senador Pompeu",
+  "ibge": "2312700",
+  "pop": "25.076",
+  "lei": "Lei nº 1.804, de 22/10/2025",
+  "url": "https://www.senadorpompeu.ce.gov.br/leis.php?id=2505",
+  "iss": "não localizado — PDF bloqueado; MPCE só tem imagem sem texto",
+  "lc": "Abaixo de 100 mil hab.: duplo grau facultativo. CTM novo de out/2025, ainda anterior à LC 236/2026 — não adaptado; substituiu a LC 1.464/2017",
+  "st": "conf"
+ },
+ {
+  "pos": 78,
+  "m": "Irauçuba",
+  "ibge": "2306108",
+  "pop": "24.977",
+  "lei": "LC nº 002, de 28/12/2011",
+  "url": "https://www.iraucuba.ce.gov.br/leis.php?id=2373",
+  "iss": "não localizado — PDF bloqueado; sem arquivo no MPCE",
+  "lc": "Abaixo de 100 mil hab.: duplo grau facultativo. CTM anterior à LC 236/2026 — não adaptado; LC 2.280, de 15/07/2026, altera o art. 85 (teor não lido)",
+  "st": "conf"
+ },
+ {
+  "pos": 79,
+  "m": "Ibiapina",
+  "ibge": "2305308",
+  "pop": "24.727",
+  "lei": "Lei nº 25, de 11/08/1993",
+  "url": "https://www.ibiapina.ce.gov.br/leis.php?id=1001",
+  "iss": "não localizado — PDF bloqueado; MPCE só tem imagem",
+  "lc": "Abaixo de 100 mil hab.: duplo grau facultativo. CTM de 1993, anterior à LC 236/2026 — não adaptado; Lei 919/2025 cria taxas de poder de polícia",
+  "st": "conf"
+ },
+ {
+  "pos": 80,
+  "m": "Jucás",
+  "ibge": "2307403",
+  "pop": "24.655",
+  "lei": "Lei nº 9, de 12/11/2009",
+  "url": "https://camarajucas.ce.gov.br/institucional/legislacao/?ementa=tribut",
+  "iss": "não localizado — texto não aberto; sem arquivo no MPCE",
+  "lc": "Abaixo de 100 mil hab.: duplo grau facultativo. CTM anterior à LC 236/2026 — não adaptado; alterado pela Lei 124/2014. Em 2026: LC 462 (ITBI/IPTU COHAB-CE) e Lei 475 (Refis)",
+  "st": "conf"
+ },
+ {
+  "pos": 81,
+  "m": "Independência",
+  "ibge": "2305605",
+  "pop": "24.400",
+  "lei": "Lei nº 07, de 26/11/2013",
+  "url": "https://independencia.ce.gov.br/leis.php?id=316",
+  "iss": "não localizado — MPCE só tem imagem",
+  "lc": "Abaixo de 100 mil hab.: duplo grau facultativo. CTM anterior à LC 236/2026 — não adaptado; Refis pela Lei 700, de 07/04/2026",
+  "st": "conf"
+ },
+ {
+  "pos": 82,
+  "m": "Aurora",
+  "ibge": "2301703",
+  "pop": "24.223",
+  "lei": "Lei nº 001, de 17/06/2019 (espécie não confirmada)",
+  "url": "https://www.aurora.ce.gov.br/leis.php?id=1055",
+  "iss": "não localizado — PDF bloqueado por robots.txt",
+  "lc": "Abaixo de 100 mil hab.: duplo grau facultativo. CTM anterior à LC 236/2026 — não adaptado; Lei 699, de 20/07/2026, cria taxa de licença ambiental",
+  "st": "sec"
+ }
+];
+
+const BOLETIM = {
+  data:"2026-09-23",
+  de:"2026-08-24",
+  janela:"Segunda rodada de 23/09. Janela de 48 horas no federal: nada novo desde a manhã — Receita, CARF, PGFN, CGIBS, Planalto (até o Decreto 13.125) e PLPs da Câmara conferidos. Estadual e municipal em 30 dias: o DOE-CE de 23/09 segue fora do servidor, e a varredura dos portais municipais trouxe o primeiro ato tributário cearense da janela, o Refis 2026 de Guaiúba.",
+  lede:[
+   {mk:"agir",t:"O <b>CARF cancelou a Súmula nº 147</b>: cai a cumulação da multa isolada de 50% do carnê-leão com a multa de ofício de 75% no IRPF. Quem tem processo pendente peticiona agora. Efeito só com a publicação no DOU, que ainda não saiu."},
+   {mk:"hoje",t:"<b>SC Cosit nº 180/2026</b>: crédito presumido de ICMS fica <b>fora da base da Cofins cumulativa</b>, mesmo após a Lei 14.789/2023. Abre revisão de base e recuperação do recolhido a maior."},
+   {mk:"30/09",t:"Faltam sete dias para o bloco de <b>30/09</b>: opção pelo Simples 2027, regime de <b>IBS e CBS</b>, Editais <b>PGFN nº 6 e nº 9</b> até as 19h, DCTFWeb e DITR. <b>119.549</b> pedidos de Simples já foram indeferidos, cada um com 30 dias para regularizar."},
+   {mk:"01/10",t:"Fim da ST de autopeças de São Paulo para o Ceará em <b>01/10</b>, e nenhum decreto cearense até hoje. O DOE de 23/09 não saiu; o de véspera entra amanhã."},
+   {mk:"Ceará",t:"Primeiro ato municipal cearense da janela: <b>Guaiúba institui o Refis 2026</b> (Lei nº 1.308, de 01/09). Descontos e prazo não lidos — o PDF está bloqueado."}
+  ],
+  conferir:[
+   "<b>Refis 2026 de Guaiúba (Lei nº 1.308/2026):</b> ficha oficial confirmada; descontos, parcelas e prazo de adesão não lidos, porque o PDF está em diretório bloqueado por robots.txt.",
+   "<b>Base de CTMs — Forquilha e Ocara:</b> na safra [2026] do IBGE, os dois ficam acima de Tamboril e faltam na base. Entram na próxima leva.",
+   "<b>Busca na web indisponível nesta rodada:</b> a ferramenta de busca foi recusada pelo proxy. CONFAZ, STF, STJ e SEFAZ-CE, que dependem de busca, não foram revisitados à tarde — valem as checagens da manhã.",
+"<b>DOE-CE de 23/09 (hoje):</b> não foi publicado. O diretório /PDF/20260923/ devolve HTTP 300 e o servidor lista como alternativas 21 e 22/09. Não é falha de acesso — é ausência de edição. Se houver IN da SEFAZ ou decreto de ICMS hoje, entra amanhã.",
+   "<b>Ponto cego de ontem fechado:</b> o caderno p01 do DOE de 22/09, que devolvera HTTP 300 em duas tentativas, foi lido hoje por inteiro. Edição nº 176, Série 3 — só portarias, licitações, extratos e atos de pessoal. Nenhum ato tributário, nenhum decreto estadual. O p02 já tinha sido lido ontem, com o mesmo resultado.",
+   "<b>IN SEFAZ-CE nº 089/2026:</b> quinta checagem, mesmo resultado. Três caminhos independentes convergem — o índice do TaxesBrasil para o Ceará continua parando na 088, a busca direta por 089 e 090 volta vazia e os DOEs de 15 a 18, 21 e 22/09 foram lidos sem nenhuma IN da SEFAZ. Indício forte de que não existe, não prova.",
+   "<b>Decretos estaduais 37.547 a 37.554, 37.557 e 37.559 em diante</b> não foram lidos — estão em edições intermediárias do DOE. Dos seis confirmados na faixa (37.544, 37.545, 37.546, 37.555, 37.556 e 37.558), nenhum é tributário: são desapropriação, crédito suplementar e nomenclatura de rodovias. O site da PGE-CE, que resolveria a lacuna de uma vez, devolve 403.",
+   "<b>O Ceará não internalizou os Convênios ICMS 93 a 108/2026</b> (Despacho CONFAZ nº 40/2026, DOU 09/09) nem se manifestou sobre o Protocolo ICMS nº 94/2026, que encerra a ST de autopeças de São Paulo em 01/10. Nada localizado — e a lacuna dos decretos acima impede afirmar que não houve.",
+   "<b>Convênios ICMS 109, 110 e 111/2026:</b> número, data do ato (21/09) e do DOU (22/09) confirmados por duas fontes independentes; o teor integral não foi lido em fonte oficial. Sobre o Convênio 110, as fontes divergem quanto ao rol de estados já beneficiados pelo Convênio 66/1994 — uma lista Acre, Amazonas e Rondônia, outra inclui o Amapá.",
+   "<b>Portaria Conjunta SEFAZ/PGE-CE nº 03/2026, de 31/08/2026</b>, sobre incentivo a projetos desportivos por dedução de ICMS: aparece em índice secundário, inteiro teor não localizado. Não usar sem conferir.",
+   "<b>Números dos oito enunciados do CARF</b> aprovados em 14/09 e a ata daquela sessão: nada no DOU até hoje. A publicação da decisão de cancelamento da Súmula 147, de 21/09, também não foi confirmada. A última portaria de efeito vinculante segue sendo a MF nº 1.785/2026, que alcança as Súmulas 188 a 238 — nem os oito novos nem o cancelamento produzem efeito ainda.",
+   "<b>ADIs 7.822, 7.830, 7.844 e 7.848</b> (revogação unilateral de benefícios de ICMS, rel. Cármen Lúcia): estavam em pauta física, mas as fontes divergem entre 23 e 24/09 e nenhum resultado foi confirmado. O placar virtual de 4 a 1 formado em 2025 foi anulado pelo pedido de destaque do ministro Fux — não serve de base para agir.",
+   "<b>Tema 1.016 do STF</b> (expurgos inflacionários em depósitos judiciais): suspenso desde a sessão de 03/06/2026 e não localizado em nenhuma pauta de setembro. Segue valendo a suspensão nacional dos processos.",
+   "<b>Temas 1.158 e 1.304 do STJ saem do radar como novidade:</b> a divergência de datas era confusão entre julgamento e divulgação. O 1.158 (IPTU e alienação fiduciária) foi julgado em 12/03/2025 e o 1.304 (base do IPI) em 10/12/2025 — teses consolidadas, fora de qualquer janela deste boletim.",
+   "<b>Diário Oficial dos Municípios do Ceará (APRECE):</b> quinto dia sem leitura. A home indica edição de 23/09, mas a busca exige POST e a interface devolve \"nenhuma edição publicada nesta data\". Pista nova: os PDFs abrem sem login pelo storage do SIGPub, no padrão www-storage.voxtecnologia.com.br/?f=764&i=publicado_<ID>_<AAAA-MM-DD>_<hash>.pdf — o ID e o hash não são dedutíveis, mas o arquivo não pede autenticação. É o caminho para furar a maior lacuna do boletim.",
+   "<b>Valores das pautas de ICMS-ST</b> das INs 85, 86 e 88 da SEFAZ-CE: ementas confirmadas, anexos com os valores só existem no DOE. Da IN 88 já se sabe que inclui picolés e sorvetes de 1,4L com valor de referência de R$ 26,83.",
+   "<b>Links do CONFAZ:</b> o host bloqueia leitura automatizada em todas as tentativas, então convênios, ajustes e atos COTEPE apontam para o índice oficial do ano, não para o ato."
+  ]
+};
+
+const PRAZOS = [
+ {d:"2026-09-23",t:"Encerra a consulta pública sobre os regimes aduaneiros especiais de depósito",det:"Interessa a quem opera entreposto, depósito afiançado ou recinto alfandegado"},
+ {d:"2026-09-25",t:"Encerra a sessão virtual do STF no Tema 1.113 — ICMS sobre a subvenção da tarifa social de energia",det:"Maioria de 6 a 1 pela não incidência, formada em 18/09. A tese só existe depois da proclamação, e pode haver modulação"},
+ {d:"2026-09-30",t:"Opção pelo Simples Nacional com efeito em 01/01/2027",det:"Resolução CGSN nº 190/2026 — cancelamento possível até 30/11/2026. 119.549 pedidos já foram indeferidos, cada um com 30 dias para regularizar"},
+ {d:"2026-09-30",t:"Escolha do modelo de recolhimento de IBS e CBS para o 1º semestre de 2027",det:"O Simples híbrido da Res. CGSN nº 190/2026. Decisão distinta da do Simples, no mesmo prazo. Nova janela de 1º a 31/03/2027 para o 2º semestre"},
+ {d:"2026-09-30",t:"Adesão ao Edital PGFN nº 6/2026, até as 19h",det:"Capacidade de pagamento, débitos irrecuperáveis, pequeno valor e débitos garantidos. Inscritos até 01/06/2025 no pequeno valor e até 03/03/2026 nas demais"},
+ {d:"2026-09-30",t:"Adesão ao Edital PGFN nº 9/2026 — Desenrola MEI, até as 19h",det:"MEI com até R$ 20 mil inscritos em dívida ativa: desconto de até 100% de juros e multas limitado a 70% da dívida, em até 133 parcelas"},
+ {d:"2026-09-30",t:"DCTFWeb, DITR 2026 e quota do ITR, DeCripto, DME, DOI e DTTA",det:"Bloco de obrigações acessórias federais"},
+ {d:"2026-10-01",t:"Fim da substituição tributária de autopeças de São Paulo para o Ceará",det:"Protocolo ICMS nº 94/2026 — revisar cadastros, preços de compra e antecipação. Valem também os Protocolos 92 a 121. O Ceará ainda não se manifestou"},
+ {d:"2026-10-04",t:"Pedido de habilitação para compensar saldos credores de PIS/Cofins",det:"IN RFB nº 2.344/2026, art. 5º da LC 235/2026 — teto de R$ 750 milhões em 2026, rateio pela produção de etanol hidratado de 2025"},
+ {d:"2026-10-05",t:"Vigência das novas rejeições do CT-e e das revogações do Ajuste SINIEF nº 36/2026",det:"O restante do Ajuste 36 e o Ajuste 40 entram em 01/11. O Ajuste 36 também institui o MOC online do CT-e"},
+ {d:"2026-10-09",t:"Encerra a vigência do Decreto nº 13.116/2026",det:"Sem prorrogação até hoje: as alíquotas cheias de PIS/Cofins sobre gasolina e etanol hidratado voltam em 10/10. Monitorar o DOU na semana de 05 a 09/10"},
+ {d:"2026-10-21",t:"1ª parcela do ICMS de setembro no Fortaleza Líquida",det:"As outras duas vencem em 20/11 e 22/12"},
+ {d:"2026-10-31",t:"Fim da janela de opção das cooperativas pelo regime específico de IBS e CBS",det:"Registro no Portal Tributação sobre Consumo mais a listagem de associados com data de admissão. Efeitos a partir de 01/01/2027"},
+ {d:"2026-11-01",t:"Emissor Nacional da NFS-e passa a ser obrigatório para ME e EPP",det:"Resolução CGSN nº 191/2026 — nota fora do padrão nacional perde validade fiscal"},
+ {d:"2026-11-01",t:"Vigência geral dos Ajustes SINIEF 28 a 40/2026",det:"NF-e, NFC-e, CT-e, MDF-e, BP-e, NF3e, NFCom e DC-e"},
+ {d:"2026-11-03",t:"Vinculação dos meios de pagamento à NF-e e à NFC-e, Grupo 3",det:"IN SEFAZ-CE nº 66/2026 — é a providência estadual pendente mais próxima no Ceará"},
+ {d:"2026-11-10",t:"Fim do prazo para corrigir sem multa os créditos de PIS/Pasep e Cofins",det:"Autorregularização aberta pela Receita; notificações por Correios, e-CAC e e-Mac"},
+ {d:"2026-11-30",t:"Último dia para cancelar a opção pelo Simples Nacional e pelo regime de IBS e CBS de 2027",det:"Resolução CGSN nº 190/2026"},
+ {d:"2028-09-04",t:"Prazo final para municípios e estados adequarem a legislação à LC 236/2026",det:"Teto de multas e processo administrativo fiscal. Quem não adequar passa a seguir os arts. 208-A a 208-J do CTN"}
+];
+
+const FONTES_LIVE = [
+ {n:"Base de normas da Receita Federal",d:"A melhor fonte federal do painel, e em 23/09 ficou melhor: a raiz normas.receita.fazenda.gov.br é aplicação JavaScript e não entrega nada, mas a interface legada sijut2consulta/consulta.action, com tipoData=2 e dt_inicio/dt_fim, devolve HTML puro e lista TODOS os atos publicados em cada dia. Foi assim que 21, 22 e 23/09 foram varridos por inteiro — 11, 26 e 15 atos — em vez de por amostragem. O inteiro teor tem URL própria em normasinternet2. Cuidado: URL longa demais é recusada pelo proxy, então mantenha poucos parâmetros."},
+ {n:"CARF — notícias oficiais",d:"Confirmada em 23/09: gov.br/carf publica sessão, colegiado, placar e teor das decisões de súmula em página aberta e legível. Foi por aqui que o cancelamento da Súmula nº 147 entrou com fonte oficial. O que ela não dá é a publicação no DOU, que é o marco de eficácia."},
+ {n:"DOM-CE (APRECE) — PDF por storage",d:"Pista aberta em 23/09, ainda não explorada: a busca do SIGPub exige POST, mas os PDFs das edições ficam em www-storage.voxtecnologia.com.br e abrem sem login nem POST, no padrão ?f=764&i=publicado_<ID>_<AAAA-MM-DD>_<hash>.pdf. O ID e o hash não são dedutíveis — capturá-los é o que transforma o municipal cearense de ponto cego em fonte."},
+ {n:"PGFN — página de transações vigentes",d:"Confirmada em 22/09: lista os editais em vigor com público-alvo, modalidades e prazo, cada um em página própria. Foi por aqui que os Editais 8 e 9/2026 entraram, com o prazo do MEI em 30/09."},
+ {n:"Senado — legislação federal",d:"Leis, decretos e medidas provisórias com ementa, em XML. Foi por aqui que os decretos 13.116 e 13.119 entraram."},
+ {n:"Senado e Câmara — proposições",d:"Projetos de lei complementar por ano e sigla. Origem dos quatro PLPs que mexem na LC 214/2025."},
+ {n:"Receita Federal — notícias",d:"Anuncia instruções normativas, prazos e novidades da Reforma. A tag RTC marca o que é Reforma."},
+ {n:"Comitê Gestor do IBS",d:"Resoluções, regulamentos e atos conjuntos. A aba de notícias volta vazia; só a de resoluções entrega conteúdo."},
+ {n:"Diário Oficial dos Municípios do Ceará",d:"Edição diária da APRECE. Responde, mas a busca por termo voltou vazia no período."},
+ {n:"IBGE e TCE-CE",d:"Municípios e código IBGE; o TCE-CE oferece API aberta com os dados do SIM dos municípios."},
+ {n:"DOE-CE por PDF direto",d:"Descoberto em 19/09: a busca do diário bloqueia robô, mas o PDF da edição tem URL previsível por data e é legível. Caminho oficial para os atos estaduais do Ceará."},
+ {n:"Planalto por URL direta",d:"Descoberto em 20/09: o índice bloqueia, mas o inteiro teor por URL previsível (ccivil_03/.../lNNNNN.htm e lcp/lcpNNN.htm) é legível. Foi assim que a Lei 15.504, a Lei 15.506 e a LC 237 entraram com fonte oficial."},
+ {n:"Econet — índice diário do DOU",d:"Índice secundário por data, federal e por UF. Entrega o que saiu no DOU e no DOE-CE em cada dia; útil para não perder ato, mas exige conferência no diário."}
+];
+const FONTES_BLOCKED = [
+ {n:"Diário Oficial da União",d:"Reconferido em 22/09: o host não respondeu em nenhuma tentativa. A busca bloqueia robô. O caminho oficial é o INLABS, que publica as edições completas em XML desde 2020 — exige login e coletor próprio."},
+ {n:"CONFAZ",d:"Sem API de legislação. Convênios e ajustes SINIEF saem no DOU em até dez dias da reunião — é por ali que um coletor os pega."},
+ {n:"SEFAZ-CE",d:"A API que existe conecta transportadoras ao Sitram, não serve para legislação. As normas saem no DOE-CE."},
+ 
+ {n:"Planalto e LexML — busca",d:"A busca e o índice bloqueiam leitura automatizada; só o inteiro teor por URL direta responde, e é preciso já saber o número da lei."},
+ {n:"Prefeitura de Fortaleza (SEFIN)",d:"Bloqueia robô. Instruções normativas e notas técnicas da NFS-e ficam fora do alcance direto."},
+ {n:"Portais municipais com CMS leis.php",d:"Mapeado em 21/09: Massapê, Ipueiras, Mombaça, Bela Cruz, Ubajara e Paraipaba expõem a ficha da lei — número, data, ementa, URL — e bloqueiam o diretório /arquivos/ no robots.txt. Dá para identificar o CTM, não para ler o texto e extrair alíquota."},
+ {n:"API SIDRA do IBGE",d:"Responde, mas o JSON é grande demais para leitura automatizada confiável: devolveu populações grosseiramente erradas em 21/09. A base usa as páginas HTML Cidades e Estados, município a município."},
+ {n:"leismunicipais.com.br",d:"HTTP 403 para acesso automatizado. Aparece na busca e serve de pista de ementa, nunca de fonte."},
+ {n:"Base de alíquotas de ISSQN da NFS-e",d:"Achada em 21/09 e é a chave da coluna ISS: planilha por UF com alíquota por município e código de serviço. Não é legível por leitura web — o arquivo do Ceará para no terceiro município. Exige download e cruzamento por código IBGE, fora do alcance desta ferramenta."},
+ {n:"STF, STJ e CARF — consulta processual",d:"portal.stf.jus.br, processo.stj.jus.br e o SINCON do CARF bloqueiam por robots.txt. Datas de sessão se confirmam por imprensa jurídica; ata, acórdão e trânsito em julgado, não."}
+];
+
+/* ---------- render ---------- */
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const MES=["jan","fev","mar","abr","mai","jun","jul","ago","set","out","nov","dez"];
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+function dataLonga(iso){const[a,m,d]=iso.split("-");return `${d} de ${["janeiro","fevereiro","março","abril","maio","junho","julho","agosto","setembro","outubro","novembro","dezembro"][+m-1]} de ${a}`}
+function dataCurta(iso){const[a,m,d]=iso.split("-");return `${d}/${m}`}
+
+const LK={ato:"abre o ato",noticia:"matéria sobre o ato",indice:"índice — procure o ato"};
+function ehNovo(i){ if(typeof i.nv==="boolean")return i.nv; const lim=new Date(BOLETIM.data); lim.setDate(lim.getDate()-2); return i.d>=lim.toISOString().slice(0,10) }
+function itemHTML(i,marcar){
+  const nv=marcar?(ehNovo(i)?`<span class="chip novo">novo</span>`:`<span class="chip rcp">recap ${esc(dataCurta(i.d))}</span>`):"";
+  return `<article class="item" data-imp="${esc(i.imp)}">
+    <div class="stripe"></div>
+    <div class="item-body">
+      <div class="chips">
+        ${nv}
+        <span class="chip imp-${esc(i.imp)}">${esc(i.imp)}</span>
+        <span class="chip">${esc(i.esf)}${i.uf?" · "+esc(i.uf):""}</span>
+        <span class="chip">${esc(i.tema)}</span>
+        <span class="chip ${i.of?"of":"sec"}">${i.of?"fonte oficial":"conferir no diário"}</span>
+        <span class="chip date">${esc(dataCurta(i.d))}</span>
+      </div>
+      <h3>${esc(i.t)}</h3>
+      <p>${esc(i.r)}</p>
+      ${i.prazo?`<div class="prazo">${esc(i.prazo)}</div>`:""}
+      <div class="src"><span>${esc(i.fn)}</span>${i.fu?`<a href="${esc(i.fu)}" target="_blank" rel="noopener">abrir</a> <span class="lkchip lk-${esc(i.lk||"indice")}">${LK[i.lk]||LK.indice}</span>`:""}</div>
+    </div>
+  </article>`;
+}
+function renderLista(el,arr){
+  if(!arr.length){el.innerHTML='<p class="empty">Nenhum item com esses filtros.</p>';return}
+  const por={};arr.forEach(i=>(por[i.d]=por[i.d]||[]).push(i));
+  el.innerHTML=Object.keys(por).sort().reverse().map(d=>
+    `<section class="daygroup"><div class="dayhead"><span>${esc(dataLonga(d))}</span><em>${por[d].length}</em></div>${por[d].map(itemHTML).join("")}</section>`
+  ).join("");
+}
+function filtrar(){
+  const q=$("#q").value.trim().toLowerCase(), e=$("#f-esfera").value, f=$("#f-fonte").value,
+        tm=$("#f-tema").value, im=$("#f-imp").value, d1=$("#d1").value, d2=$("#d2").value;
+  const out=ITENS.filter(i=>{
+    if(e&&i.esf!==e)return false; if(f&&i.ft!==f)return false;
+    if(tm&&i.tema!==tm)return false; if(im&&i.imp!==im)return false;
+    if(d1&&i.d<d1)return false; if(d2&&i.d>d2)return false;
+    if(q&&!(i.t+" "+i.r+" "+i.fn+" "+i.tema+" "+i.esf).toLowerCase().includes(q))return false;
+    return true;
+  });
+  renderLista($("#lista"),out);
+  $("#c-n").textContent=out.length; $("#c-lbl").textContent=out.length===1?"item":"itens";
+}
+function opts(sel,vals){sel.insertAdjacentHTML("beforeend",vals.map(v=>`<option>${esc(v)}</option>`).join(""))}
+opts($("#f-esfera"),[...new Set(ITENS.map(i=>i.esf))].sort());
+opts($("#f-fonte"),[...new Set(ITENS.map(i=>i.ft))].sort());
+opts($("#f-tema"),[...new Set(ITENS.map(i=>i.tema))].sort());
+opts($("#f-imp"),["Alto","Médio","Baixo"]);
+["#q","#f-esfera","#f-fonte","#f-tema","#f-imp","#d1","#d2"].forEach(s=>{
+  $(s).addEventListener(s==="#q"?"input":"change",filtrar);
+});
+$("#clear").addEventListener("click",()=>{
+  ["#q","#f-esfera","#f-fonte","#f-tema","#f-imp","#d1","#d2"].forEach(s=>$(s).value="");filtrar();
+});
+filtrar();
+$("#s-itens").textContent=ITENS.length;
+$("#s-alto").textContent=ITENS.filter(i=>i.imp==="Alto").length;
+
+$("#tl").innerHTML=MARCOS.map(m=>
+ `<li class="${m.st}"><div class="when">${esc(m.q)}</div><div class="what">${esc(m.w)}</div><div class="why">${esc(m.y)}</div></li>`
+).join("");
+renderLista($("#lista-reforma"),ITENS.filter(i=>i.rt));
+
+$("#ctm-body").innerHTML=CTM.map(c=>`<tr>
+  <td class="num" style="color:var(--ink-3)">${c.pos}</td>
+  <td class="muni">${esc(c.m)}</td>
+  <td class="num">${esc(c.ibge)}</td>
+  <td class="num">${esc(c.pop)}</td>
+  <td>${c.url?`<a href="${esc(c.url)}" target="_blank" rel="noopener">${esc(c.lei)}</a>`:esc(c.lei)}</td>
+  <td>${esc(c.iss)}</td>
+  <td>${esc(c.lc)}</td>
+  <td><span class="tag ${c.st==="conf"?"conf":c.st==="sec"?"sec2":"nao"}">${c.st==="conf"?"confirmado":c.st==="sec"?"secundária":"a resolver"}</span></td>
+</tr>`).join("");
+(function(){
+  const n=k=>CTM.filter(c=>c.st===k).length;
+  $("#ctm-resumo").innerHTML=
+    `<b>${CTM.length}</b> de 184 municípios na base · `+
+    `<b>${n("conf")}</b> confirmados em fonte oficial · `+
+    `<b>${n("sec")}</b> em fonte secundária · `+
+    `<b>${n("nao")}</b> a resolver · `+
+    `<b>${CTM.filter(c=>parseInt(c.pop.replace(/\./g,""),10)>100000).length}</b> acima de 100 mil hab., obrigados ao duplo grau`;
+  $("#s-muni").textContent=CTM.length;
+})();
+
+$("#src-live").innerHTML=FONTES_LIVE.map(f=>`<div class="srccard live"><div class="n">${esc(f.n)}</div><div class="d">${esc(f.d)}</div></div>`).join("");
+$("#src-blocked").innerHTML=FONTES_BLOCKED.map(f=>`<div class="srccard blocked"><div class="n">${esc(f.n)}</div><div class="d">${esc(f.d)}</div></div>`).join("");
+
+/* ---------- boletim do dia ---------- */
+(function(){
+  const dl=new Date(BOLETIM.data+"T12:00:00");
+  $("#bol-date").textContent=dl.toLocaleDateString("pt-BR",{weekday:"long",day:"numeric",month:"long",year:"numeric"});
+  $("#bol-janela").textContent=BOLETIM.janela;
+  $("#bol-lede").innerHTML=BOLETIM.lede.map(l=>`<li><span class="mk">${esc(l.mk)}</span><span>${l.t}</span></li>`).join("");
+  $("#bol-conferir").innerHTML=BOLETIM.conferir.map(c=>`<li>${c}</li>`).join("");
+
+  const ag=new Date(), h0=Date.UTC(ag.getFullYear(),ag.getMonth(),ag.getDate());
+  $("#bol-prazos").innerHTML=PRAZOS.slice().sort((a,b)=>a.d<b.d?-1:1).map(p=>{
+    const [Y,M,D]=p.d.split("-").map(Number);
+    const dd=Math.round((Date.UTC(Y,M-1,D)-h0)/86400000);
+    const u=dd<0?"passou":dd===0?"hoje":dd<=10?"perto":dd<=30?"medio":"longe";
+    const rot=dd<0?"venceu":dd===0?"é hoje":dd===1?"amanhã":`em ${dd} dias`;
+    return `<li class="prz" data-u="${u}">
+      <div class="quando"><b>${esc(dataCurta(p.d))}</b>${esc(rot)}</div>
+      <div class="oque">${esc(p.t)}<span class="det">${esc(p.det)}</span></div></li>`;
+  }).join("");
+
+  const secao=i=>i.rt?"Reforma tributária":/^Estadual/.test(i.esf)?"Estadual — Ceará primeiro":/Municipal/.test(i.esf)?"Municipal":"Federal";
+  const ordem=["Reforma tributária","Federal","Estadual — Ceará primeiro","Municipal"];
+  const peso={Alto:0,"Médio":1,Baixo:2};
+  const daJanela=ITENS.filter(i=>i.d>=BOLETIM.de)
+    .sort((a,b)=>((ehNovo(b)?1:0)-(ehNovo(a)?1:0))||(peso[a.imp]-peso[b.imp])||(a.d<b.d?1:-1));
+  $("#bol-itens").innerHTML=ordem.map(sec=>{
+    const arr=daJanela.filter(i=>secao(i)===sec);
+    if(!arr.length)return "";
+    return `<section class="daygroup"><div class="dayhead"><span>${esc(sec)}</span><em>${arr.length}</em></div>${arr.map(i=>itemHTML(i,true)).join("")}</section>`;
+  }).join("");
+})();
+
+$$("nav button").forEach(b=>b.addEventListener("click",()=>{
+  $$("nav button").forEach(x=>x.setAttribute("aria-selected",String(x===b)));
+  ["boletim","radar","reforma","ctm","fontes"].forEach(t=>{$("#p-"+t).hidden=(t!==b.dataset.tab)});
+  try{localStorage.setItem("radar-tab",b.dataset.tab)}catch(e){}
+}));
+try{const t=localStorage.getItem("radar-tab"); if(t&&$("#tab-"+t))$("#tab-"+t).click()}catch(e){}
+</script>
+
+</body></html>
